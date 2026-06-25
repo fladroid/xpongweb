@@ -36,5 +36,43 @@
       "wiki": "Rock_Art_and_the_X-Ray_Style",
       "description": "Joe Strummer's 1999 album — source of the line “I need to see in an x-ray style.”"
     }
+  ],
+  "about": [
+    {
+      "icon": "🧠",
+      "name": "Reinforcement learning",
+      "description": "Training agents to act by rewarding good decisions and penalising bad ones, learning from trial and error.",
+      "wiki": "Reinforcement_learning"
+    },
+    {
+      "icon": "🏓",
+      "name": "Pong",
+      "description": "One of the earliest arcade video games (1972) — the minimal two-paddle world this lab trains agents to play.",
+      "wiki": "Pong"
+    },
+    {
+      "icon": "🎯",
+      "name": "Q-learning",
+      "description": "A model-free reinforcement-learning algorithm that learns the value of taking each action in each state.",
+      "wiki": "Q-learning"
+    },
+    {
+      "icon": "♟️",
+      "name": "Self-play",
+      "description": "An agent improving by playing against copies of itself, the technique behind AlphaGo and AlphaZero.",
+      "wiki": "Self-play"
+    },
+    {
+      "icon": "🩻",
+      "name": "X-ray style art",
+      "wiki": "X-ray_style_art",
+      "description": "Prehistoric art depicting the bones and organs inside an animal, not just its skin — the attitude the project is named for."
+    },
+    {
+      "icon": "🎸",
+      "name": "Rock Art and the X-Ray Style",
+      "wiki": "Rock_Art_and_the_X-Ray_Style",
+      "description": "Joe Strummer's 1999 album — source of the line “I need to see in an x-ray style.”"
+    }
   ]
 }

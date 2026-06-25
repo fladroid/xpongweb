@@ -407,6 +407,9 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
 }
 
 /* --- Section headings --- */
+#about-layout { display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+.xp-infobox-text { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin: 0; padding: 8px; }
+
 .xp-section-title {
   font-family: var(--font-serif);
   font-size: 22px;
