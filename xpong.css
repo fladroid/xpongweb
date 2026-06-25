@@ -326,7 +326,12 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   color: var(--text);
   margin-bottom: 8px;
   letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
+.xp-hero-icon { width: 64px; height: 64px; flex-shrink: 0; }
 .xp-hero-logo span { color: var(--accent); }
 .xp-hero-lab {
   font-size: 12px;

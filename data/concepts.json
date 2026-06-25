@@ -23,6 +23,18 @@
       "name": "Self-play",
       "description": "An agent improving by playing against copies of itself, the technique behind AlphaGo and AlphaZero.",
       "wiki": "Self-play"
+    },
+    {
+      "icon": "🩻",
+      "name": "X-ray style art",
+      "wiki": "X-ray_style_art",
+      "description": "Prehistoric art depicting the bones and organs inside an animal, not just its skin — the attitude the project is named for."
+    },
+    {
+      "icon": "🎸",
+      "name": "Rock Art and the X-Ray Style",
+      "wiki": "Rock_Art_and_the_X-Ray_Style",
+      "description": "Joe Strummer's 1999 album — source of the line “I need to see in an x-ray style.”"
     }
   ]
 }
