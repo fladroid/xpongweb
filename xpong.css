@@ -575,3 +575,129 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   #xp-nav.open .xp-nav-link { padding: 10px 12px; font-size: 15px; }
   #xp-header-inner { position: relative; }
 }
+
+/* --- M1: Pong game --- */
+.xp-game-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.xp-game-scorebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin: 8px 0 16px;
+  font-family: var(--font-mono);
+}
+.xp-game-score {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--text);
+  min-width: 60px;
+  text-align: center;
+  line-height: 1;
+}
+.xp-game-score-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.xp-game-score-sep {
+  font-size: 32px;
+  color: var(--text-light);
+}
+.xp-game-canvas-box {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+  line-height: 0;
+}
+#xp-game {
+  display: block;
+  touch-action: none;
+  width: 100%;
+  height: auto;
+}
+.xp-game-status {
+  text-align: center;
+  min-height: 22px;
+  margin: 12px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.xp-game-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 8px 0 24px;
+}
+.xp-game-btn {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  padding: 10px 24px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.xp-game-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.xp-game-btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  min-width: 130px;
+}
+.xp-game-btn-primary:hover {
+  background: var(--link-hover);
+  color: #fff;
+}
+.xp-game-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.xp-game-legend-side {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+}
+.xp-game-legend-side strong {
+  color: var(--text);
+  display: block;
+  margin-bottom: 4px;
+}
+.xp-game-legend kbd {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--badge-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin: 0 1px;
+}
+
+/* --- M1: Pong game — mobile --- */
+@media (max-width: 700px) {
+  .xp-game-score { font-size: 36px; }
+  .xp-game-scorebar { gap: 20px; }
+  .xp-game-legend { flex-direction: column; gap: 8px; }
+  .xp-game-controls { flex-wrap: wrap; }
+}

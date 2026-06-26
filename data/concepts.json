@@ -74,5 +74,13 @@
       "wiki": "Rock_Art_and_the_X-Ray_Style",
       "description": "Joe Strummer's 1999 album — source of the line “I need to see in an x-ray style.”"
     }
+  ],
+  "game": [
+    {
+      "icon": "🏓",
+      "name": "Pong",
+      "description": "One of the earliest arcade video games (1972) — the minimal two-paddle world this lab trains agents to play.",
+      "wiki": "Pong"
+    }
   ]
 }
