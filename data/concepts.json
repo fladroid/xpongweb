@@ -73,6 +73,12 @@
       "name": "Rock Art and the X-Ray Style",
       "wiki": "Rock_Art_and_the_X-Ray_Style",
       "description": "Joe Strummer's 1999 album — source of the line “I need to see in an x-ray style.”"
+    },
+    {
+      "icon": "✨",
+      "name": "Claude",
+      "description": "Anthropic's AI assistant — the working partner across xpong's documented sessions.",
+      "wiki": "Claude_(AI)"
     }
   ],
   "game": [

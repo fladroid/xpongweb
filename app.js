@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's07';
-  var XP_VERSION_DATE = '25 Jun 2026';
+  var XP_VERSION = 's08';
+  var XP_VERSION_DATE = '27 Jun 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
   var NAV = [
@@ -84,11 +84,13 @@
 
       ab_side_project: 'Project info',
       ab_side_status: 'Status',
-      ab_side_status_v: 'M0 — landing',
+      ab_side_status_v: 'M1 — classic Pong',
       ab_side_build: 'Build',
       ab_side_build_v: 'static, no build step',
       ab_side_verify: 'Verify, not fiction',
       ab_side_verify_text: 'Every concept in this text — from Aboriginal x-ray art to the transformer — is linked to Wikipedia. This is not decoration. The ideas I speak of are not invented for the sake of this project; they are documented, public, and verifiable. I don\'t ask you to take my word — follow the link and check for yourself.<br><br>This is the X-Ray attitude turned on the text itself: just as I light up what the agent does inside, I open up where my ideas come from.',
+      ab_side_phil: "Philosophy",
+      ab_side_phil_text: "The journey matters more than the destination. The attitude I am building is generic and applies far beyond the game of Pong. xpong is a practical implementation of my X-Ray stance: a refusal to treat machine learning as a black box, and the building of windows into it — move by move, layer by layer.<br><br><em>— Flavio</em>",
       ab_side_auth: 'Authorship & Collaboration',
       ab_side_auth_text: 'xpong is conceived, designed and maintained by <strong>Flavio</strong> (fladroid). The project\'s philosophy, methodology, architecture and all final design decisions are his — and remain his sole responsibility.<br><br>The project is built in ongoing collaboration with <strong><a href=\'https://claude.ai\' target=\'_blank\'>Claude</a></strong> (Anthropic) — not as a code-completion tool, but as a working partner across documented sessions: implementation, debugging, analysis, and the conceptual dialogue that shaped this very page. Every session is recorded in <code>docs/sessions/</code>, where both names appear — a deliberate choice, in the spirit of this project\'s X-Ray attitude: the process of building should be as transparent as the thing built.<br><br><em>Flavio &amp; Claude · xpong · 2026</em>',
     },
@@ -146,11 +148,13 @@
       ab_p7c: "Diese Haltung hat einen Namen — X-Ray — und ältere Wurzeln, als man denken würde. Die Aborigine-Maler Australiens stellen seit Jahrtausenden Tiere mit von innen sichtbaren Knochen und Organen dar, nicht nur mit der Haut von außen. Der Punkmusiker Joe Strummer sang 1999, er wolle „in einem X-Ray-Stil“ sehen — als Akt der Weigerung, das als gegebene Tatsache hinzunehmen, was man ihm vorsetzt. Dieselbe Idee, derselbe Widerstand gegen Undurchsichtigkeit. xpong ist diese Haltung, angewandt auf ein Spiel mit zwei Strichen und einem Punkt — der einfachste mögliche Einstieg in die größte Frage der modernen Technik.",
       ab_side_project: "Projektinfo",
       ab_side_status: "Status",
-      ab_side_status_v: "M0 — Landing",
+      ab_side_status_v: "M1 — klassisches Pong",
       ab_side_build: "Build",
       ab_side_build_v: "statisch, ohne Build-Schritt",
       ab_side_verify: "Prüfen, nicht erfinden",
       ab_side_verify_text: "Jeder Begriff in diesem Text — von der Aborigine-Röntgenkunst bis zum Transformer — ist mit Wikipedia verlinkt. Das ist keine Dekoration. Die Ideen, von denen ich spreche, sind nicht für dieses Projekt erfunden; sie sind dokumentiert, öffentlich und überprüfbar. Ich bitte dich nicht, mir aufs Wort zu glauben — folge dem Link und überprüfe es selbst.<br><br>Das ist die X-Ray-Haltung, auf den Text selbst gerichtet: so wie ich ausleuchte, was der Agent im Inneren tut, lege ich offen, woher meine Ideen kommen.",
+      ab_side_phil: "Philosophie",
+      ab_side_phil_text: "Der Weg ist wichtiger als das Ziel. Die Haltung, die ich aufbaue, ist generisch und reicht weit über das Spiel Pong hinaus. xpong ist eine praktische Umsetzung meiner X-Ray-Haltung: die Weigerung, maschinelles Lernen als Blackbox zu behandeln, und der Bau von Fenstern hinein — Zug um Zug, Schicht um Schicht.<br><br><em>— Flavio</em>",
       ab_side_auth: "Urheberschaft & Zusammenarbeit",
       ab_side_auth_text: "xpong ist konzipiert, gestaltet und gepflegt von <strong>Flavio</strong> (fladroid). Die Philosophie, Methodik, Architektur und alle endgültigen Designentscheidungen des Projekts sind seine — und bleiben seine alleinige Verantwortung.<br><br>Das Projekt wird in fortlaufender Zusammenarbeit mit <strong><a href='https://claude.ai' target='_blank'>Claude</a></strong> (Anthropic) aufgebaut — nicht als Werkzeug zur Code-Vervollständigung, sondern als Arbeitspartner über dokumentierte Sessions hinweg: Implementierung, Debugging, Analyse und der konzeptionelle Dialog, der eben diese Seite geprägt hat. Jede Session wird in <code>docs/sessions/</code> festgehalten, wo beide Namen erscheinen — eine bewusste Entscheidung, im Geiste der X-Ray-Haltung dieses Projekts: der Prozess des Bauens soll so durchsichtig sein wie das Gebaute.<br><br><em>Flavio & Claude · xpong · 2026</em>",
     },
@@ -208,11 +212,13 @@
       ab_p7c: "Questo atteggiamento ha un nome — X-Ray — e radici più antiche di quanto si pensi. I pittori aborigeni dell'Australia raffigurano da migliaia di anni gli animali con ossa e organi visibili dall'interno, non solo con la pelle esterna. Il musicista punk Joe Strummer cantava nel 1999 di voler vedere «in stile x-ray» — come atto di rifiuto di accettare ciò che gli viene servito come fatto acquisito. La stessa idea, la stessa resistenza all'opacità. xpong è quell'atteggiamento applicato a un gioco con due trattini e un puntino — l'ingresso più semplice possibile alla più grande domanda della tecnologia moderna.",
       ab_side_project: "Info progetto",
       ab_side_status: "Stato",
-      ab_side_status_v: "M0 — landing",
+      ab_side_status_v: "M1 — Pong classico",
       ab_side_build: "Build",
       ab_side_build_v: "statico, senza fase di build",
       ab_side_verify: "Verificare, non inventare",
       ab_side_verify_text: "Ogni concetto in questo testo — dall'arte aborigena a raggi X fino al transformer — è collegato a Wikipedia. Non è un ornamento. Le idee di cui parlo non sono inventate per le esigenze di questo progetto; sono documentate, pubbliche e verificabili. Non ti chiedo di credermi sulla parola — segui il link e verifica tu stesso.<br><br>È l'atteggiamento X-Ray rivolto al testo stesso: così come illumino ciò che l'agente fa dentro, apro anche da dove vengono le mie idee.",
+      ab_side_phil: "Filosofia",
+      ab_side_phil_text: "Il percorso conta più della meta. L'atteggiamento che costruisco è generico e si applica ben oltre il gioco di Pong. xpong è un'implementazione pratica della mia posizione X-Ray: il rifiuto di trattare l'apprendimento automatico come una scatola nera, e la costruzione di finestre al suo interno — mossa dopo mossa, strato dopo strato.<br><br><em>— Flavio</em>",
       ab_side_auth: "Paternità e collaborazione",
       ab_side_auth_text: "xpong è concepito, progettato e mantenuto da <strong>Flavio</strong> (fladroid). La filosofia, la metodologia, l'architettura e tutte le decisioni finali di design del progetto sono sue — e restano sua esclusiva responsabilità.<br><br>Il progetto è costruito in collaborazione continua con <strong><a href='https://claude.ai' target='_blank'>Claude</a></strong> (Anthropic) — non come strumento di completamento del codice, ma come partner di lavoro attraverso sessioni documentate: implementazione, debugging, analisi e il dialogo concettuale che ha plasmato proprio questa pagina. Ogni sessione è registrata in <code>docs/sessions/</code>, dove compaiono entrambi i nomi — una scelta deliberata, nello spirito dell'atteggiamento X-Ray di questo progetto: il processo di costruzione dev'essere trasparente quanto la cosa costruita.<br><br><em>Flavio & Claude · xpong · 2026</em>",
     },
@@ -270,11 +276,13 @@
       ab_p7c: "Taj stav ima ime — X-Ray — i starije korijene nego što biste pomislili. Aboridžinski slikari Australije tisućama godina prikazuju životinje s vidljivim kostima i organima iznutra, a ne samo kožom izvana. Punk glazbenik Joe Strummer pjevao je 1999. da želi vidjeti „u rendgenskom stilu“ — kao čin odbijanja da prihvati ono što mu se servira kao gotova činjenica. Ista ideja, isti otpor prema neprozirnosti. xpong je taj stav primijenjen na jednu igru s dvije crtice i točkicom — najjednostavniji mogući ulaz u najveće pitanje suvremene tehnologije.",
       ab_side_project: "Podaci o projektu",
       ab_side_status: "Status",
-      ab_side_status_v: "M0 — landing",
+      ab_side_status_v: "M1 — klasični Pong",
       ab_side_build: "Izrada",
       ab_side_build_v: "statički, bez build koraka",
       ab_side_verify: "Provjera, ne mašta",
       ab_side_verify_text: "Svaki pojam u ovom tekstu — od aboridžinske rendgenske umjetnosti do transformera — povezan je linkom s Wikipedijom. To nije ukras. Ideje o kojima govorim nisu izmišljene za potrebe ovog projekta; dokumentirane su, javne i provjerljive. Ne tražim da mi vjeruješ na riječ — prati link i provjeri sam.<br><br>To je X-Ray stav okrenut prema samom tekstu: jednako kao što osvjetljavam što agent radi iznutra, otvaram i odakle moje ideje dolaze.",
+      ab_side_phil: "Filozofija",
+      ab_side_phil_text: "Put je važniji od cilja. Stav koji gradim generičan je i primjenjiv daleko šire od igre Ponga. xpong je praktična implementacija mojeg X-Ray stava: odbijanje da se strojno učenje tretira kao crna kutija, i gradnja prozora u njega — potez po potez, sloj po sloj.<br><br><em>— Flavio</em>",
       ab_side_auth: "Autorstvo i suradnja",
       ab_side_auth_text: "xpong je osmislio, dizajnirao i održava <strong>Flavio</strong> (fladroid). Filozofija, metodologija, arhitektura i sve konačne dizajnerske odluke projekta njegove su — i ostaju njegova isključiva odgovornost.<br><br>Projekt se gradi u stalnoj suradnji s <strong><a href='https://claude.ai' target='_blank'>Claudeom</a></strong> (Anthropic) — ne kao alat za dopunjavanje koda, već kao radni partner kroz dokumentirane sesije: implementacija, debugiranje, analiza i konceptualni dijalog koji je oblikovao upravo ovu stranicu. Svaka je sesija zabilježena u <code>docs/sessions/</code>, gdje se pojavljuju oba imena — namjeran izbor, u duhu X-Ray stava ovog projekta: proces izgradnje treba biti jednako proziran kao i izgrađena stvar.<br><br><em>Flavio & Claude · xpong · 2026</em>",
     },
@@ -333,11 +341,13 @@
         ab_p7c: "Тај став има име — X-Ray — и старије корене него што бисте помислили. Абориџински сликари Аустралије хиљадама година приказују животиње са видљивим костима и органима изнутра, а не само кожом споља. Панк музичар Joe Strummer певао је 1999. да жели да види „у рендгенском стилу“ — као чин одбијања да прихвати оно што му се сервира као готова чињеница. Иста идеја, исти отпор према непрозирности. xpong је тај став примењен на једну игру са две црте и тачкицом — најједноставнији могући улаз у највеће питање савремене технологије.",
         ab_side_project: "Подаци о пројекту",
         ab_side_status: "Статус",
-        ab_side_status_v: "M0 — landing",
+        ab_side_status_v: "M1 — класичан Понг",
         ab_side_build: "Израда",
         ab_side_build_v: "статички, без build корака",
         ab_side_verify: "Провера, не машта",
         ab_side_verify_text: "Сваки појам у овом тексту — од абориџинске рендгенске уметности до transformer-а — повезан је линком са Википедијом. То није украс. Идеје о којима говорим нису измишљене за потребе овог пројекта; документоване су, јавне и проверљиве. Не тражим да ми верујеш на реч — прати линк и провери сам.<br><br>То је X-Ray став окренут према самом тексту: исто као што осветљавам шта агент ради изнутра, отварам и одакле моје идеје долазе.",
+        ab_side_phil: "Филозофија",
+        ab_side_phil_text: "Пут је важнији од циља. Став који градим генеричан је и применљив далеко шире од игре Понга. xpong је практична имплементација мог X-Ray става: одбијање да се машинско учење третира као црна кутија, и градња прозора у њега — потез по потез, слој по слој.<br><br><em>— Flavio</em>",
         ab_side_auth: "Ауторство и сарадња",
         ab_side_auth_text: "xpong је осмислио, дизајнирао и одржава <strong>Flavio</strong> (fladroid). Филозофија, методологија, архитектура и све коначне дизајнерске одлуке пројекта његове су — и остају његова искључива одговорност.<br><br>Пројекат се гради у сталној сарадњи са <strong><a href='https://claude.ai' target='_blank'>Claude-ом</a></strong> (Anthropic) — не као алат за допуњавање кода, већ као радни партнер кроз документоване сесије: имплементација, дебаговање, анализа и концептуални дијалог који је обликовао управо ову страницу. Свака сесија је забележена у <code>docs/sessions/</code>, где се појављују оба имена — намеран избор, у духу X-Ray става овог пројекта: процес изградње треба да буде једнако прозиран као и изграђена ствар.<br><br><em>Flavio & Claude · xpong · 2026</em>",
       }
