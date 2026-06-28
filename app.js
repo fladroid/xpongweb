@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's08';
-  var XP_VERSION_DATE = '27 Jun 2026';
+  var XP_VERSION = 's09';
+  var XP_VERSION_DATE = '28 Jun 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
   var NAV = [

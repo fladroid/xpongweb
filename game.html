@@ -30,20 +30,22 @@
         <canvas id="xp-game" width="800" height="500"></canvas>
       </div>
 
-      <div class="xp-game-status" id="xp-game-status"></div>
-
-      <div class="xp-game-controls">
-        <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
-        <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
-      </div>
-
-      <div class="xp-game-legend">
-        <div class="xp-game-legend-side">
+      <div class="xp-game-deck">
+        <div class="xp-game-legend-side xp-game-deck-left">
           <strong data-i18n="g_legend_left">Left player</strong><br>
           <kbd>W</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>S</kbd> <span data-i18n="g_down">down</span>
           <br><span data-i18n="g_touch_left">or drag on the left half (touch)</span>
         </div>
-        <div class="xp-game-legend-side">
+
+        <div class="xp-game-deck-center">
+          <div class="xp-game-status" id="xp-game-status"></div>
+          <div class="xp-game-controls">
+            <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
+            <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="xp-game-legend-side xp-game-deck-right">
           <strong data-i18n="g_legend_right">Right player</strong><br>
           <kbd>O</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>L</kbd> <span data-i18n="g_down">down</span>
           <br><span data-i18n="g_touch_right">or drag on the right half (touch)</span>

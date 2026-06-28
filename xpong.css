@@ -663,15 +663,29 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   background: var(--link-hover);
   color: #fff;
 }
-.xp-game-legend {
+.xp-game-deck {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   max-width: 900px;
-  margin: 0 auto 16px;
+  margin: 8px auto 24px;
   font-size: 13px;
   color: var(--text-muted);
 }
+.xp-game-deck-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.xp-game-deck .xp-game-legend-side {
+  flex: 0 1 240px;
+}
+/* status/controls sit inside the deck centre now — drop their outer margins */
+.xp-game-deck .xp-game-status   { margin: 0 0 4px; }
+.xp-game-deck .xp-game-controls { margin: 0; }
 .xp-game-legend-side {
   flex: 1;
   text-align: center;
@@ -698,6 +712,8 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
 @media (max-width: 700px) {
   .xp-game-score { font-size: 36px; }
   .xp-game-scorebar { gap: 20px; }
-  .xp-game-legend { flex-direction: column; gap: 8px; }
+  .xp-game-deck { flex-direction: column; gap: 12px; }
+  .xp-game-deck-center { order: -1; }
+  .xp-game-deck .xp-game-legend-side { flex: 1 1 auto; width: 100%; }
   .xp-game-controls { flex-wrap: wrap; }
 }
