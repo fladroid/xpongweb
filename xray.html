@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>X-Ray — xpong</title>
+  <link rel="stylesheet" href="xpong.css">
+</head>
+<body data-page="xray">
+  <header id="xp-header"></header>
+
+  <div id="xp-page">
+    <div class="xp-game-wrap">
+
+      <h1 class="xp-section-title" data-i18n="x_title">X-Ray — the trajectory ray</h1>
+
+      <div id="xray-layout">
+        <div class="xray-main">
+
+          <div class="xp-game-scorebar">
+            <div>
+              <span class="xp-game-score-label" data-i18n="g_left">Left</span>
+              <span class="xp-game-score" id="xp-score-l">0</span>
+            </div>
+            <span class="xp-game-score-sep">:</span>
+            <div>
+              <span class="xp-game-score-label" data-i18n="g_right">Right</span>
+              <span class="xp-game-score" id="xp-score-r">0</span>
+            </div>
+          </div>
+
+          <div class="xp-game-canvas-box">
+            <canvas id="xp-game" width="800" height="500"></canvas>
+          </div>
+
+          <div class="xp-game-deck">
+            <div class="xp-game-legend-side xp-game-deck-left">
+              <strong data-i18n="g_legend_left">Left player</strong><br>
+              <kbd>W</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>S</kbd> <span data-i18n="g_down">down</span>
+              <br><span data-i18n="g_touch_left">or drag on the left half (touch)</span>
+            </div>
+
+            <div class="xp-game-deck-center">
+              <div class="xp-game-status" id="xp-game-status"></div>
+              <div class="xp-game-controls">
+                <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
+                <button class="xp-game-btn xp-game-btn-active" id="xp-btn-ray" data-i18n="x_ray_btn">X-Ray</button>
+                <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
+              </div>
+            </div>
+
+            <div class="xp-game-legend-side xp-game-deck-right">
+              <strong data-i18n="g_legend_right">Right player</strong><br>
+              <kbd>O</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>L</kbd> <span data-i18n="g_down">down</span>
+              <br><span data-i18n="g_touch_right">or drag on the right half (touch)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="xray-side">
+          <div class="xp-infobox xp-xray-box">
+            <div class="xp-infobox-title" data-i18n="x_box_title">X-Ray</div>
+            <p class="xp-infobox-text" data-i18n="x_intro">The laser shows where the ball is going by pure physics — up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone's move.</p>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </div>
+
+  <footer id="xp-footer"></footer>
+  <script src="app.js"></script>
+  <script src="pong-core.js"></script>
+  <script src="xray.js"></script>
+</body>
+</html>
