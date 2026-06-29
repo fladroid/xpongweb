@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's09.2';
-  var XP_VERSION_DATE = '28 Jun 2026';
+  var XP_VERSION = 's10';
+  var XP_VERSION_DATE = '29 Jun 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
   var NAV = [
@@ -53,7 +53,7 @@
       g_touch_left: 'or drag on the left half (touch)',
       g_touch_right: 'or drag on the right half (touch)',
       x_title: 'X-Ray \u2014 the trajectory ray',
-      x_intro: 'The laser shows where the ball is going by pure physics \u2014 up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone\u2019s move.',
+      x_intro: 'The beam shows where the ball is going by pure physics \u2014 up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone\u2019s move. Toggle it with the X-Ray button or the x key.',
       x_box_title: 'X-Ray',
       x_ray_on: 'X-Ray: on',
       x_ray_off: 'X-Ray: off',
@@ -123,7 +123,7 @@
       g_touch_left: 'oder links wischen (Touch)',
       g_touch_right: 'oder rechts wischen (Touch)',
       x_title: 'X-Ray \u2014 der Flugbahn-Strahl',
-      x_intro: 'Der Laser zeigt durch reine Physik, wohin der Ball fliegt \u2014 bis zur ersten Wand, zum ersten Schl\u00e4ger oder Tor. Er endet dort, wo die Gewissheit endet: Er sagt niemals den Abprall oder den Zug eines Spielers voraus.',
+      x_intro: 'Der Strahl zeigt durch reine Physik, wohin der Ball fliegt \u2014 bis zur ersten Wand, zum ersten Schl\u00e4ger oder Tor. Er endet dort, wo die Gewissheit endet: Er sagt niemals den Abprall oder den Zug eines Spielers voraus. Ein-/ausschalten mit der X-Ray-Taste oder der Taste x.',
       x_box_title: 'X-Ray',
       x_ray_on: 'X-Ray: an',
       x_ray_off: 'X-Ray: aus',
@@ -192,7 +192,7 @@
       g_touch_left: 'o trascina sulla metà sinistra (touch)',
       g_touch_right: 'o trascina sulla metà destra (touch)',
       x_title: 'X-Ray \u2014 il raggio della traiettoria',
-      x_intro: 'Il laser mostra, per pura fisica, dove va la palla \u2014 fino al primo muro, racchetta o porta. Si ferma dove finisce la certezza: non predice mai il rimbalzo n\u00e9 la mossa di nessuno.',
+      x_intro: 'Il raggio mostra, per pura fisica, dove va la palla \u2014 fino al primo muro, racchetta o porta. Si ferma dove finisce la certezza: non predice mai il rimbalzo n\u00e9 la mossa di nessuno. Attivalo o disattivalo con il pulsante X-Ray o il tasto x.',
       x_box_title: 'X-Ray',
       x_ray_on: 'X-Ray: attivo',
       x_ray_off: 'X-Ray: spento',
@@ -261,7 +261,7 @@
       g_touch_left: 'ili povuci po lijevoj polovini (touch)',
       g_touch_right: 'ili povuci po desnoj polovini (touch)',
       x_title: 'X-Ray \u2014 zraka putanje',
-      x_intro: 'Laser pokazuje, \u010distom fizikom, kamo lopta ide \u2014 do prvog zida, reketa ili gola. Staje ondje gdje prestaje izvjesnost: nikada ne predvi\u0111a odboj ni ne\u010diji potez.',
+      x_intro: 'Zraka pokazuje, \u010distom fizikom, kamo lopta ide \u2014 do prvog zida, reketa ili gola. Staje ondje gdje prestaje izvjesnost: nikada ne predvi\u0111a odboj ni ne\u010diji potez. Uklju\u010di je i isklju\u010di gumbom X-Ray ili tipkom x.',
       x_box_title: 'X-Ray',
       x_ray_on: 'X-Ray: uključen',
       x_ray_off: 'X-Ray: isključen',
@@ -331,7 +331,7 @@
         g_touch_left: 'или превуци по левој половини (touch)',
         g_touch_right: 'или превуци по десној половини (touch)',
         x_title: 'X-Ray \u2014 \u0437\u0440\u0430\u043a \u043f\u0443\u0442\u0430\u045a\u0435',
-        x_intro: '\u041b\u0430\u0441\u0435\u0440 \u043f\u043e\u043a\u0430\u0437\u0443\u0458\u0435, \u0447\u0438\u0441\u0442\u043e\u043c \u0444\u0438\u0437\u0438\u043a\u043e\u043c, \u043a\u0443\u0434\u0430 \u043b\u043e\u043f\u0442\u0430 \u0438\u0434\u0435 \u2014 \u0434\u043e \u043f\u0440\u0432\u043e\u0433 \u0437\u0438\u0434\u0430, \u0440\u0435\u043a\u0435\u0442\u0430 \u0438\u043b\u0438 \u0433\u043e\u043b\u0430. \u0421\u0442\u0430\u0458\u0435 \u0442\u0430\u043c\u043e \u0433\u0434\u0435 \u043f\u0440\u0435\u0441\u0442\u0430\u0458\u0435 \u0438\u0437\u0432\u0435\u0441\u043d\u043e\u0441\u0442: \u043d\u0438\u043a\u0430\u0434\u0430 \u043d\u0435 \u043f\u0440\u0435\u0434\u0432\u0438\u0452\u0430 \u043e\u0434\u0431\u043e\u0458 \u043d\u0438 \u043d\u0435\u0447\u0438\u0458\u0438 \u043f\u043e\u0442\u0435\u0437.',
+        x_intro: '\u0417\u0440\u0430\u043a \u043f\u043e\u043a\u0430\u0437\u0443\u0458\u0435, \u0447\u0438\u0441\u0442\u043e\u043c \u0444\u0438\u0437\u0438\u043a\u043e\u043c, \u043a\u0443\u0434\u0430 \u043b\u043e\u043f\u0442\u0430 \u0438\u0434\u0435 \u2014 \u0434\u043e \u043f\u0440\u0432\u043e\u0433 \u0437\u0438\u0434\u0430, \u0440\u0435\u043a\u0435\u0442\u0430 \u0438\u043b\u0438 \u0433\u043e\u043b\u0430. \u0421\u0442\u0430\u0458\u0435 \u0442\u0430\u043c\u043e \u0433\u0434\u0435 \u043f\u0440\u0435\u0441\u0442\u0430\u0458\u0435 \u0438\u0437\u0432\u0435\u0441\u043d\u043e\u0441\u0442: \u043d\u0438\u043a\u0430\u0434\u0430 \u043d\u0435 \u043f\u0440\u0435\u0434\u0432\u0438\u0452\u0430 \u043e\u0434\u0431\u043e\u0458 \u043d\u0438 \u043d\u0435\u0447\u0438\u0458\u0438 \u043f\u043e\u0442\u0435\u0437. \u0423\u043a\u0459\u0443\u0447\u0438 \u0433\u0430 \u0438 \u0438\u0441\u043a\u0459\u0443\u0447\u0438 \u0434\u0443\u0433\u043c\u0435\u0442\u043e\u043c X-Ray \u0438\u043b\u0438 \u0442\u0430\u0441\u0442\u0435\u0440\u043e\u043c x.',
         x_box_title: 'X-Ray',
         x_ray_on: 'X-Ray: укључен',
         x_ray_off: 'X-Ray: искључен',
