@@ -20,6 +20,10 @@
   var state;
   var running, gameOver;
   var rayOn = false;                // X-Ray overlay toggle (off at start)
+  var heatOn = false;               // goal heatmap toggle (off at start)
+  var HEAT_BANDS = 4;               // horizontal bands per goal line (coarse)
+  var goalsLeftWall  = [0,0,0,0];   // goals entering the LEFT wall (right player scored), by band
+  var goalsRightWall = [0,0,0,0];   // goals entering the RIGHT wall (left player scored), by band
   var keys = {};
   var raf = null;
 
@@ -28,6 +32,8 @@
     Core.resetBall(state, Math.random() < 0.5 ? 1 : -1);
     gameOver = false;
     running = false;
+    rayOn = false; heatOn = false;
+    goalsLeftWall = [0,0,0,0]; goalsRightWall = [0,0,0,0];
     updateHUD();
     draw();
   }
@@ -42,6 +48,7 @@
     }
     if (k === ' ') { toggleRun(); e.preventDefault(); }
     if (k === 'x' || k === 'X') { toggleRay(); e.preventDefault(); }
+    if (k === 'h' || k === 'H') { toggleHeat(); e.preventDefault(); }
   }
   function onKeyUp(e) {
     var k = e.key;
@@ -106,6 +113,9 @@
 
     var hit = Core.stepBall(state);
     if (hit === 'goalL' || hit === 'goalR') {
+      var band = Math.floor(state.ball.y / (H / HEAT_BANDS));
+      if (band < 0) band = 0; if (band > HEAT_BANDS - 1) band = HEAT_BANDS - 1;
+      if (hit === 'goalR') goalsLeftWall[band]++; else goalsRightWall[band]++;
       afterPoint(hit === 'goalR' ? -1 : 1);
     }
   }
@@ -145,6 +155,29 @@
     var m = col.match(/(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
     if (m) return [+m[1], +m[2], +m[3]];
     return [51, 102, 204]; // fallback accent
+  }
+
+  // Draw the goal heatmap: narrow bands hugging each goal line, alpha by frequency.
+  function drawHeatmap() {
+    var max = 0, i;
+    for (i = 0; i < HEAT_BANDS; i++) {
+      if (goalsLeftWall[i] > max) max = goalsLeftWall[i];
+      if (goalsRightWall[i] > max) max = goalsRightWall[i];
+    }
+    if (max === 0) return;            // nothing recorded yet
+    var rgb = toRGB(colors.accent);
+    var bandH = H / HEAT_BANDS;
+    var bw = 14;                      // band width, hugging the wall
+    for (i = 0; i < HEAT_BANDS; i++) {
+      if (goalsLeftWall[i] > 0) {
+        ctx.fillStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.15 + 0.65 * goalsLeftWall[i] / max) + ')';
+        ctx.fillRect(0, i * bandH, bw, bandH);
+      }
+      if (goalsRightWall[i] > 0) {
+        ctx.fillStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.15 + 0.65 * goalsRightWall[i] / max) + ')';
+        ctx.fillRect(W - bw, i * bandH, bw, bandH);
+      }
+    }
   }
 
   // Draw the predicted ray: dashed, fading toward the end, marker at contact.
@@ -200,6 +233,8 @@
     ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
     ctx.setLineDash([]);
 
+    // heatmap is the deepest layer (shadow of past goals), under everything
+    if (heatOn) drawHeatmap();
     // ray sits under the ball/paddles so the play stays legible on top
     if (rayOn) drawRay();
 
@@ -221,16 +256,26 @@
   }
 
   // --- HUD wiring (i18n via window.xpong.t with EN fallback) ---
-  var elScoreL, elScoreR, elBtnStart, elStatus, elBtnRay;
+  var elScoreL, elScoreR, elBtnStart, elStatus, elBtnRay, elBtnHeat, elWinner;
   function gt(key, en) {
     return (window.xpong && window.xpong.t) ? window.xpong.t(key) : en;
   }
   function updateHUD() {
     if (elScoreL) elScoreL.textContent = state.scoreL;
     if (elScoreR) elScoreR.textContent = state.scoreR;
+    if (elWinner) {
+      elWinner.textContent = gameOver
+        ? (state.winner === 'L' ? gt('g_left', 'Left') : gt('g_right', 'Right')) + ' ' + gt('g_wins', 'wins!')
+        : '';
+    }
     if (elBtnStart) {
       elBtnStart.textContent = running ? gt('g_pause', 'Pause')
         : (gameOver ? gt('g_again', 'Play again') : gt('g_start', 'Start'));
+    }
+    if (elBtnHeat) {
+      elBtnHeat.textContent = (heatOn ? gt('x_heat_on', 'Heatmap: on')
+                                      : gt('x_heat_off', 'Heatmap: off'));
+      elBtnHeat.classList.toggle('xp-game-btn-active', heatOn);
     }
     if (elBtnRay) {
       elBtnRay.textContent = (rayOn ? gt('x_ray_on', 'X-Ray: on')
@@ -239,8 +284,7 @@
     }
     if (elStatus) {
       if (gameOver) {
-        var who = state.winner === 'L' ? gt('g_left', 'Left') : gt('g_right', 'Right');
-        elStatus.textContent = who + ' ' + gt('g_wins', 'wins!');
+        elStatus.textContent = gt('g_new_set', 'Set over \u2014 press the button for a new set');
       } else if (!running && (state.scoreL > 0 || state.scoreR > 0)) {
         elStatus.textContent = gt('g_serve_hint', 'Press Space or tap to serve');
       } else if (!running) {
@@ -259,6 +303,12 @@
 
   function toggleRay() {
     rayOn = !rayOn;
+    updateHUD();
+    draw();
+  }
+
+  function toggleHeat() {
+    heatOn = !heatOn;
     updateHUD();
     draw();
   }
@@ -285,11 +335,14 @@
     elBtnStart = document.getElementById('xp-btn-start');
     elStatus   = document.getElementById('xp-game-status');
     elBtnRay   = document.getElementById('xp-btn-ray');
+    elBtnHeat  = document.getElementById('xp-btn-heat');
+    elWinner   = document.getElementById('xp-winner');
 
     var btnReset = document.getElementById('xp-btn-reset');
     if (elBtnStart) elBtnStart.addEventListener('click', toggleRun);
     if (btnReset)   btnReset.addEventListener('click', function () { newGame(); });
     if (elBtnRay)   elBtnRay.addEventListener('click', toggleRay);
+    if (elBtnHeat)  elBtnHeat.addEventListener('click', toggleHeat);
 
     readColors();
     newGame();

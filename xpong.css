@@ -589,6 +589,17 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   margin: 8px 0 16px;
   font-family: var(--font-mono);
 }
+
+.xp-game-winner {
+  text-align: center;
+  min-height: 26px;
+  margin: -8px 0 16px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
 .xp-game-score {
   font-size: 48px;
   font-weight: bold;

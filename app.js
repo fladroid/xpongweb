@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's10';
+  var XP_VERSION = 's11';
   var XP_VERSION_DATE = '29 Jun 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
@@ -42,6 +42,7 @@
       g_start: 'Start',
       g_pause: 'Pause',
       g_again: 'Play again',
+      g_new_set: 'Set over \u2014 press the button for a new set',
       g_reset: 'Reset',
       g_start_hint: 'Press Space or tap to start',
       g_serve_hint: 'Press Space or tap to serve',
@@ -112,6 +113,7 @@
       g_start: 'Start',
       g_pause: 'Pause',
       g_again: 'Nochmal',
+      g_new_set: 'Satz vorbei \u2014 Taste f\u00fcr einen neuen Satz dr\u00fccken',
       g_reset: 'Zurücksetzen',
       g_start_hint: 'Leertaste oder tippen zum Starten',
       g_serve_hint: 'Leertaste oder tippen für Aufschlag',
@@ -181,6 +183,7 @@
       g_start: 'Avvia',
       g_pause: 'Pausa',
       g_again: 'Rigioca',
+      g_new_set: 'Set finito \u2014 premi il pulsante per un nuovo set',
       g_reset: 'Reimposta',
       g_start_hint: 'Premi Spazio o tocca per iniziare',
       g_serve_hint: 'Premi Spazio o tocca per servire',
@@ -250,6 +253,7 @@
       g_start: 'Pokreni',
       g_pause: 'Pauza',
       g_again: 'Igraj opet',
+      g_new_set: 'Set gotov \u2014 pritisni gumb za novi set',
       g_reset: 'Poništi',
       g_start_hint: 'Pritisni razmak ili dodirni za početak',
       g_serve_hint: 'Pritisni razmak ili dodirni za servis',
@@ -320,6 +324,7 @@
         g_start: 'Покрени',
         g_pause: 'Пауза',
         g_again: 'Играј опет',
+        g_new_set: '\u0421\u0435\u0442 \u0433\u043e\u0442\u043e\u0432 \u2014 \u043f\u0440\u0438\u0442\u0438\u0441\u043d\u0438 \u0434\u0443\u0433\u043c\u0435 \u0437\u0430 \u043d\u043e\u0432\u0438 \u0441\u0435\u0442',
         g_reset: 'Поништи',
         g_start_hint: 'Притисни размак или додирни за почетак',
         g_serve_hint: 'Притисни размак или додирни за сервис',
