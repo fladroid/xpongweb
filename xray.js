@@ -256,7 +256,7 @@
   }
 
   // --- HUD wiring (i18n via window.xpong.t with EN fallback) ---
-  var elScoreL, elScoreR, elBtnStart, elStatus, elBtnRay, elBtnHeat, elWinner;
+  var elScoreL, elScoreR, elBtnStart, elStatus, elTglRay, elTglHeat, elLblRay, elLblHeat, elWinner;
   function gt(key, en) {
     return (window.xpong && window.xpong.t) ? window.xpong.t(key) : en;
   }
@@ -272,16 +272,12 @@
       elBtnStart.textContent = running ? gt('g_pause', 'Pause')
         : (gameOver ? gt('g_again', 'Play again') : gt('g_start', 'Start'));
     }
-    if (elBtnHeat) {
-      elBtnHeat.textContent = (heatOn ? gt('x_heat_on', 'Heatmap: on')
-                                      : gt('x_heat_off', 'Heatmap: off'));
-      elBtnHeat.classList.toggle('xp-game-btn-active', heatOn);
-    }
-    if (elBtnRay) {
-      elBtnRay.textContent = (rayOn ? gt('x_ray_on', 'X-Ray: on')
-                                    : gt('x_ray_off', 'X-Ray: off'));
-      elBtnRay.classList.toggle('xp-game-btn-active', rayOn);
-    }
+    if (elTglHeat) elTglHeat.checked = heatOn;
+    if (elLblHeat) elLblHeat.textContent = (heatOn ? gt('x_heat_on', 'Heatmap: on')
+                                                   : gt('x_heat_off', 'Heatmap: off'));
+    if (elTglRay) elTglRay.checked = rayOn;
+    if (elLblRay) elLblRay.textContent = (rayOn ? gt('x_ray_on', 'X-Ray: on')
+                                                : gt('x_ray_off', 'X-Ray: off'));
     if (elStatus) {
       if (gameOver) {
         elStatus.textContent = gt('g_new_set', 'Set over \u2014 press the button for a new set');
@@ -334,15 +330,17 @@
     elScoreR   = document.getElementById('xp-score-r');
     elBtnStart = document.getElementById('xp-btn-start');
     elStatus   = document.getElementById('xp-game-status');
-    elBtnRay   = document.getElementById('xp-btn-ray');
-    elBtnHeat  = document.getElementById('xp-btn-heat');
+    elTglRay   = document.getElementById('xp-toggle-ray');
+    elTglHeat  = document.getElementById('xp-toggle-heat');
+    elLblRay   = document.getElementById('xp-lbl-ray');
+    elLblHeat  = document.getElementById('xp-lbl-heat');
     elWinner   = document.getElementById('xp-winner');
 
     var btnReset = document.getElementById('xp-btn-reset');
     if (elBtnStart) elBtnStart.addEventListener('click', toggleRun);
     if (btnReset)   btnReset.addEventListener('click', function () { newGame(); });
-    if (elBtnRay)   elBtnRay.addEventListener('click', toggleRay);
-    if (elBtnHeat)  elBtnHeat.addEventListener('click', toggleHeat);
+    if (elTglRay)   elTglRay.addEventListener('change', function () { rayOn = elTglRay.checked; updateHUD(); draw(); });
+    if (elTglHeat)  elTglHeat.addEventListener('change', function () { heatOn = elTglHeat.checked; updateHUD(); draw(); });
 
     readColors();
     newGame();

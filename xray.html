@@ -37,24 +37,39 @@
 
           <div class="xp-game-deck">
             <div class="xp-game-legend-side xp-game-deck-left">
-              <strong data-i18n="g_legend_left">Left player</strong><br>
-              <kbd>W</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>S</kbd> <span data-i18n="g_down">down</span>
-              <br><span data-i18n="g_touch_left">or drag on the left half (touch)</span>
+              <strong data-i18n="g_legend_left">Left player</strong>
+              <div class="xp-keys"><kbd>W</kbd> / <kbd>S</kbd></div>
             </div>
 
             <div class="xp-game-deck-center">
               <div class="xp-game-status" id="xp-game-status"></div>
               <div class="xp-game-controls">
-                <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
-                <button class="xp-game-btn xp-game-btn-active" id="xp-btn-ray" data-i18n="x_ray_btn">X-Ray</button>
-                <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
+                <div class="xp-controls-row">
+                  <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
+                  <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
+                </div>
+                <div class="xp-controls-row">
+                  <span class="xp-toggle-wrap">
+                    <label class="xp-toggle">
+                      <input type="checkbox" id="xp-toggle-ray">
+                      <span class="xp-toggle-slider"></span>
+                    </label>
+                    <label id="xp-lbl-ray">X-Ray: off</label>
+                  </span>
+                  <span class="xp-toggle-wrap">
+                    <label class="xp-toggle">
+                      <input type="checkbox" id="xp-toggle-heat">
+                      <span class="xp-toggle-slider"></span>
+                    </label>
+                    <label id="xp-lbl-heat">Heatmap: off</label>
+                  </span>
+                </div>
               </div>
             </div>
 
             <div class="xp-game-legend-side xp-game-deck-right">
-              <strong data-i18n="g_legend_right">Right player</strong><br>
-              <kbd>O</kbd> <span data-i18n="g_up">up</span> &nbsp; <kbd>L</kbd> <span data-i18n="g_down">down</span>
-              <br><span data-i18n="g_touch_right">or drag on the right half (touch)</span>
+              <strong data-i18n="g_legend_right">Right player</strong>
+              <div class="xp-keys"><kbd>O</kbd> / <kbd>L</kbd></div>
             </div>
           </div>
 
@@ -64,6 +79,10 @@
           <div class="xp-infobox xp-xray-box">
             <div class="xp-infobox-title" data-i18n="x_box_title">X-Ray</div>
             <p class="xp-infobox-text" data-i18n="x_intro">The laser shows where the ball is going by pure physics — up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone's move.</p>
+          </div>
+          <div class="xp-infobox">
+            <div class="xp-infobox-title" data-i18n="x_nav_title">Navigation</div>
+            <p class="xp-infobox-text" data-i18n="x_nav_text">Left player: W up, S down. Right player: O up, L down. On a touch device, drag on your own half of the field to move your paddle.</p>
           </div>
         </aside>
       </div>
