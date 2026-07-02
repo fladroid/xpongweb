@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>X-Ray — xpong</title>
+  <title>Telemetry — xpong</title>
   <link rel="stylesheet" href="xpong.css">
 </head>
 <body data-page="xray">
@@ -12,7 +12,7 @@
   <div id="xp-page">
     <div class="xp-game-wrap">
 
-      <h1 class="xp-section-title" data-i18n="x_title">X-Ray — the trajectory ray</h1>
+      <h1 class="xp-section-title" data-i18n="x_title">Telemetry</h1>
 
       <div id="xray-layout">
         <div class="xray-main">
@@ -77,8 +77,12 @@
 
         <aside class="xray-side">
           <div class="xp-infobox xp-xray-box">
-            <div class="xp-infobox-title" data-i18n="x_box_title">X-Ray</div>
-            <p class="xp-infobox-text" data-i18n="x_intro">The laser shows where the ball is going by pure physics — up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone's move.</p>
+            <div class="xp-infobox-title" data-i18n="x_box_title">Beam</div>
+            <p class="xp-infobox-text" data-i18n="x_intro">The beam shows where the ball is going by pure physics — up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone's move.</p>
+          </div>
+          <div class="xp-infobox">
+            <div class="xp-infobox-title" data-i18n="x_heat_box_title">Heatmap</div>
+            <p class="xp-infobox-text" data-i18n="x_heat_box_text">The heatmap is a shadow, not a mind: it records only where the ball has physically crossed each goal line. Thin frames mark the bands on each wall; a band grows darker the more goals have landed in it. Counts accumulate through the session — Reset clears them. Toggle it with the Heatmap switch or the h key.</p>
           </div>
           <div class="xp-infobox">
             <div class="xp-infobox-title" data-i18n="x_nav_title">Navigation</div>

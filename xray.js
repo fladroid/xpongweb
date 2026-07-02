@@ -164,10 +164,17 @@
       if (goalsLeftWall[i] > max) max = goalsLeftWall[i];
       if (goalsRightWall[i] > max) max = goalsRightWall[i];
     }
-    if (max === 0) return;            // nothing recorded yet
     var rgb = toRGB(colors.accent);
     var bandH = H / HEAT_BANDS;
     var bw = 14;                      // band width, hugging the wall
+    // thin frames mark where the shadow will grow - visible before any goal
+    ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0.25)';
+    ctx.lineWidth = 1;
+    for (i = 0; i < HEAT_BANDS; i++) {
+      ctx.strokeRect(0.5, i * bandH + 0.5, bw, bandH - 1);
+      ctx.strokeRect(W - bw - 0.5, i * bandH + 0.5, bw, bandH - 1);
+    }
+    if (max === 0) return;            // frames only, nothing recorded yet
     for (i = 0; i < HEAT_BANDS; i++) {
       if (goalsLeftWall[i] > 0) {
         ctx.fillStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.15 + 0.65 * goalsLeftWall[i] / max) + ')';
@@ -193,11 +200,12 @@
     ctx.lineWidth = 2.5;
     ctx.setLineDash([7, 9]);
     ctx.lineCap = 'round';
+    var dim = running ? 1 : 0.55;              // paler while the game is not live
 
     // draw segment-by-segment so alpha can fade along the path
     for (var i = 0; i < n; i++) {
       var frac = i / n;                       // 0 at ball, 1 at obstacle
-      var alpha = 0.55 * (1 - frac) + 0.06;   // fade, never fully gone
+      var alpha = (0.55 * (1 - frac) + 0.06) * dim;   // fade, never fully gone
       ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha.toFixed(3) + ')';
       ctx.beginPath();
       ctx.moveTo(pts[i].x, pts[i].y);
@@ -209,7 +217,7 @@
     // contact marker — only on real obstacles (wall/paddle), not goals
     if (ray.stop === 'wall' || ray.stop === 'paddleL' || ray.stop === 'paddleR') {
       var end = pts[pts.length - 1];
-      ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0.9)';
+      ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.9 * dim).toFixed(3) + ')';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(end.x, end.y, C.BALL_R - 2, 0, Math.PI * 2);
