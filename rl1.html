@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RL 1 — xpong</title>
+  <link rel="stylesheet" href="xpong.css">
+</head>
+<body data-page="rl1">
+  <header id="xp-header"></header>
+
+  <div id="xp-page">
+    <div class="xp-game-wrap">
+
+      <h1 class="xp-section-title">RL 1 — Random walker</h1>
+
+      <div id="xray-layout">
+        <div class="xray-main">
+
+          <div class="xp-game-scorebar">
+            <div>
+              <span class="xp-game-score-label" data-i18n="g_left">Left</span>
+              <span class="xp-game-score" id="xp-score-l">0</span>
+            </div>
+            <span class="xp-game-score-sep">:</span>
+            <div>
+              <span class="xp-game-score-label" data-i18n="g_right">Right</span>
+              <span class="xp-game-score" id="xp-score-r">0</span>
+            </div>
+          </div>
+
+          <div class="xp-game-winner" id="xp-winner"></div>
+
+          <div class="xp-game-canvas-box">
+            <canvas id="xp-game" width="800" height="500"></canvas>
+          </div>
+
+          <div class="xp-game-deck">
+            <div class="xp-game-legend-side xp-game-deck-left">
+              <span class="xp-toggle-wrap">
+                <label class="xp-toggle">
+                  <input type="checkbox" id="rl1-left-mode">
+                  <span class="xp-toggle-slider"></span>
+                </label>
+                <label id="rl1-left-mode-lbl">Left: Human</label>
+              </span>
+              <strong data-i18n="g_legend_left">Left player</strong>
+              <div class="xp-keys"><kbd>W</kbd> / <kbd>S</kbd></div>
+            </div>
+
+            <div class="xp-game-deck-center">
+              <div class="xp-game-status" id="xp-game-status"></div>
+              <div class="xp-game-controls">
+                <div class="xp-controls-row">
+                  <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
+                  <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
+                </div>
+                <div class="xp-controls-row">
+                  <span class="xp-toggle-wrap">
+                    <label class="xp-toggle">
+                      <input type="checkbox" id="xp-toggle-ray">
+                      <span class="xp-toggle-slider"></span>
+                    </label>
+                    <label id="xp-lbl-ray">X-Ray: off</label>
+                  </span>
+                  <span class="xp-toggle-wrap">
+                    <label class="xp-toggle">
+                      <input type="checkbox" id="xp-toggle-heat">
+                      <span class="xp-toggle-slider"></span>
+                    </label>
+                    <label id="xp-lbl-heat">Heatmap: off</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="xp-game-legend-side xp-game-deck-right">
+              <strong data-i18n="g_legend_right">Right player</strong>
+              <div class="xp-keys">Agent</div>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="xray-side">
+          <div class="xp-infobox">
+            <div class="xp-infobox-title">This page — RL 1</div>
+            <p class="xp-infobox-text">The first RL page. The right paddle is an <strong>agent that plays but does not learn</strong> — a <em>random walker</em>, the zero-baseline of reinforcement learning: each step it moves up, stays, or moves down at random, with no memory and no goal. Use the switch to make the left paddle a human (W/S) or a second agent. The Beam and Heatmap below read the <em>world</em> — the ball's path and past goals — not the agent's mind: there is no mind here yet to X-ray. A learning agent, and the telemetry of its decisions, arrives on the next page.</p>
+          </div>
+          <div class="xp-infobox xp-xray-box">
+            <div class="xp-infobox-title" data-i18n="x_box_title">Beam</div>
+            <p class="xp-infobox-text" data-i18n="x_intro">The beam shows where the ball is going by pure physics — up to the first wall, paddle or goal. It stops where certainty ends: it never predicts the bounce or anyone's move.</p>
+          </div>
+          <div class="xp-infobox">
+            <div class="xp-infobox-title" data-i18n="x_heat_box_title">Heatmap</div>
+            <p class="xp-infobox-text" data-i18n="x_heat_box_text">The heatmap is a shadow, not a mind: it records only where the ball has physically crossed each goal line. Thin frames mark the bands on each wall; a band grows darker the more goals have landed in it. Counts accumulate through the session — Reset clears them. Toggle it with the Heatmap switch or the h key.</p>
+          </div>
+          <div class="xp-infobox">
+            <div class="xp-infobox-title">Navigation</div>
+            <p class="xp-infobox-text">Left player (human mode): W up, S down, or drag on the left half on touch. The right player is the agent. Flip the left paddle to an agent with the switch by the controls.</p>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </div>
+
+  <footer id="xp-footer"></footer>
+  <script src="app.js"></script>
+  <script src="pong-core.js"></script>
+  <script src="rl1.js"></script>
+</body>
+</html>

@@ -114,5 +114,13 @@
       "description": "A graphic that encodes values as colour intensity — here the goal walls darken where the ball has landed.",
       "wiki": "Heat_map"
     }
+  ],
+  "rl1": [
+    {
+      "icon": "🎲",
+      "name": "Random walk",
+      "description": "A path built from successive random steps — the agent's paddle moves up, stays, or down at random, the zero-baseline before any learning.",
+      "wiki": "Random_walk"
+    }
   ]
 }
