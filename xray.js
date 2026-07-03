@@ -166,7 +166,7 @@
     }
     var rgb = toRGB(colors.accent);
     var bandH = H / HEAT_BANDS;
-    var bw = 14;                      // band width, hugging the wall
+    var bw = 22;                      // band width, hugging the wall (wider: room for count)
     // thin frames mark where the shadow will grow - visible before any goal
     ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0.25)';
     ctx.lineWidth = 1;
@@ -185,10 +185,30 @@
         ctx.fillRect(W - bw, i * bandH, bw, bandH);
       }
     }
+    // goal counts on filled bands - text glyph on a surface disc (theme-aware)
+    ctx.font = '15px "Share Tech Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (i = 0; i < HEAT_BANDS; i++) {
+      var cy = i * bandH + bandH / 2;
+      if (goalsLeftWall[i] > 0) {
+        ctx.fillStyle = colors.bg;
+        ctx.beginPath(); ctx.arc(bw / 2, cy, 11, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = colors.fg; ctx.fillText(String(goalsLeftWall[i]), bw / 2, cy);
+      }
+      if (goalsRightWall[i] > 0) {
+        ctx.fillStyle = colors.bg;
+        ctx.beginPath(); ctx.arc(W - bw / 2, cy, 11, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = colors.fg; ctx.fillText(String(goalsRightWall[i]), W - bw / 2, cy);
+      }
+    }
   }
 
   // Draw the predicted ray: dashed, fading toward the end, marker at contact.
   function drawRay() {
+    // ball still at the center serve point - no ray/marker here;
+    // the ON ring on the ball carries the layer-active signal.
+    if (Math.abs(state.ball.x - W / 2) < 1 && Math.abs(state.ball.y - H / 2) < 1) return;
     var ray = Core.castRay(state, 800);
     var pts = ray.points;
     if (pts.length < 2) return;
@@ -252,6 +272,15 @@
 
     ctx.fillStyle = colors.accent;
     ctx.beginPath(); ctx.arc(ball.x, ball.y, C.BALL_R, 0, Math.PI * 2); ctx.fill();
+
+    // ray-ON indicator: ring on the ball (the beam's source), visible even at
+    // the center serve where no ray is drawn - mirrors heatmap's frame-when-empty
+    if (rayOn) {
+      var rr = toRGB(colors.accent);
+      ctx.strokeStyle = 'rgba(' + rr[0] + ',' + rr[1] + ',' + rr[2] + ',0.9)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(ball.x, ball.y, C.BALL_R + 4, 0, Math.PI * 2); ctx.stroke();
+    }
 
     ctx.restore();
   }
