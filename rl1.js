@@ -306,7 +306,7 @@
   }
 
   // --- HUD wiring (i18n via window.xpong.t with EN fallback) ---
-  var elScoreL, elScoreR, elBtnStart, elStatus, elTglRay, elTglHeat, elLblRay, elLblHeat, elWinner;
+  var elScoreL, elScoreR, elBtnStart, elStatus, elTglRay, elTglHeat, elLblRay, elLblHeat, elWinner, elModeLbl;
   function gt(key, en) {
     return (window.xpong && window.xpong.t) ? window.xpong.t(key) : en;
   }
@@ -328,6 +328,7 @@
     if (elTglRay) elTglRay.checked = rayOn;
     if (elLblRay) elLblRay.textContent = (rayOn ? gt('x_ray_on', 'X-Ray: on')
                                                 : gt('x_ray_off', 'X-Ray: off'));
+    if (elModeLbl) elModeLbl.textContent = leftIsAgent ? gt('r1_mode_agent', 'Left: Agent') : gt('r1_mode_human', 'Left: Human');
     if (elStatus) {
       if (gameOver) {
         elStatus.textContent = gt('g_new_set', 'Set over \u2014 press the button for a new set');
@@ -393,10 +394,10 @@
     if (elTglHeat)  elTglHeat.addEventListener('change', function () { heatOn = elTglHeat.checked; updateHUD(); draw(); });
 
     var elMode = document.getElementById('rl1-left-mode');
-    var elModeLbl = document.getElementById('rl1-left-mode-lbl');
+    elModeLbl = document.getElementById('rl1-left-mode-lbl');
     if (elMode) elMode.addEventListener('change', function () {
       leftIsAgent = elMode.checked;
-      if (elModeLbl) elModeLbl.textContent = leftIsAgent ? 'Left: Agent' : 'Left: Human';
+      updateHUD();
     });
 
     readColors();
