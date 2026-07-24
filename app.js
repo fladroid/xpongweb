@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's16';
-  var XP_VERSION_DATE = '04 Jul 2026';
+  var XP_VERSION = 's17';
+  var XP_VERSION_DATE = '24 Jul 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
   var NAV = [
@@ -14,6 +14,7 @@
     { id: 'about',     href: 'about.html',     key: 'nav_about' },
     { id: 'game',      href: 'game.html',      key: 'nav_game' },
     { id: 'xray',      href: 'xray.html',      key: 'nav_xray' },
+    { id: 'rl1',       href: 'rl1.html',       key: 'nav_rl1' },
     { id: 'stab',      href: 'stab.html',      key: 'nav_stab',      soon: true },
     { id: 'evolution', href: 'evolution.html', key: 'nav_evolution', soon: true }
   ];
@@ -34,6 +35,7 @@
       tagline: 'Training AI agents to play Pong — with the lights on.',
       hero_desc: 'xpong is a browser lab for reinforcement learning, built page by page as a window into how an agent learns. Classic Pong first; then the inner state made visible.',
       nav_home: 'Home', nav_about: 'About', nav_game: 'The Game', nav_xray: 'Telemetry',
+      nav_rl1: 'RL 1',
       nav_stab: 'Stabilization', nav_evolution: 'Evolution',
       soon: 'coming soon',
       g_title: 'The Game — classic Pong',
@@ -117,6 +119,7 @@
       tagline: 'KI-Agenten lernen Pong — bei eingeschaltetem Licht.',
       hero_desc: 'xpong ist ein Browser-Labor für Reinforcement Learning, Seite für Seite gebaut als Fenster in das Lernen eines Agenten. Zuerst klassisches Pong; dann der innere Zustand, sichtbar gemacht.',
       nav_home: 'Start', nav_about: 'Über', nav_game: 'Das Spiel', nav_xray: 'Telemetrie',
+      nav_rl1: 'RL 1',
       nav_stab: 'Stabilisierung', nav_evolution: 'Evolution',
       soon: 'in Kürze',
       g_title: 'Das Spiel — klassisches Pong',
@@ -199,6 +202,7 @@
       tagline: 'Addestrare agenti IA a giocare a Pong — a luci accese.',
       hero_desc: 'xpong è un laboratorio nel browser per il reinforcement learning, costruito pagina per pagina come una finestra su come un agente impara. Prima il Pong classico; poi lo stato interno reso visibile.',
       nav_home: 'Home', nav_about: 'Info', nav_game: 'Il gioco', nav_xray: 'Telemetria',
+      nav_rl1: 'RL 1',
       nav_stab: 'Stabilizzazione', nav_evolution: 'Evoluzione',
       soon: 'in arrivo',
       g_title: 'Il gioco — Pong classico',
@@ -281,6 +285,7 @@
       tagline: 'Treniranje AI agenata za Pong — uz upaljena svjetla.',
       hero_desc: 'xpong je laboratorij u pregledniku za reinforcement learning, građen stranicu po stranicu kao prozor u to kako agent uči. Najprije klasični Pong; zatim unutarnje stanje učinjeno vidljivim.',
       nav_home: 'Početna', nav_about: 'O projektu', nav_game: 'Igra', nav_xray: 'Telemetrija',
+      nav_rl1: 'RL 1',
       nav_stab: 'Stabilizacija', nav_evolution: 'Evolucija',
       soon: 'uskoro',
       g_title: 'Igra — klasični Pong',
@@ -364,6 +369,7 @@
         tagline: 'Тренирање AI агената да играју Понг — уз упаљено светло.',
         hero_desc: 'xpong је лабораторија у прегледачу за reinforcement learning, грађена страницу по страницу као прозор у то како агент учи. Прво класични Понг; затим унутрашње стање учињено видљивим.',
         nav_home: 'Почетна', nav_about: 'О пројекту', nav_game: 'Игра', nav_xray: '\u0422\u0435\u043b\u0435\u043c\u0435\u0442\u0440\u0438\u0458\u0430',
+        nav_rl1: 'РЛ 1',
         nav_stab: 'Стабилизација', nav_evolution: 'Еволуција',
         soon: 'ускоро',
         g_title: 'Игра — класични Pong',
