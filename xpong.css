@@ -578,22 +578,22 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
 
 /* --- M1: Pong game --- */
 .xp-game-wrap {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .xp-game-scorebar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
-  margin: 8px 0 16px;
+  gap: 28px;
+  margin: 4px 0 10px;
   font-family: var(--font-mono);
 }
 
 .xp-game-winner {
   text-align: center;
-  min-height: 26px;
-  margin: -8px 0 16px;
+  min-height: 22px;
+  margin: -4px 0 10px;
   font-family: var(--font-mono);
   font-size: 20px;
   font-weight: bold;
@@ -601,7 +601,7 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   letter-spacing: 0.5px;
 }
 .xp-game-score {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: bold;
   color: var(--text);
   min-width: 60px;
@@ -609,20 +609,23 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   line-height: 1;
 }
 .xp-game-score-label {
-  display: block;
+  display: inline;
+  margin-right: 8px;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: normal;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 .xp-game-score-sep {
   font-size: 32px;
   color: var(--text-light);
 }
 .xp-game-canvas-box {
+  max-width: min(100%, 72vh);
+  margin: 0 auto;
   border: 2px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
@@ -715,7 +718,7 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: 900px;
+  max-width: min(100%, 72vh);
   margin: 8px auto 24px;
   font-size: 13px;
   color: var(--text-muted);

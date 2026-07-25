@@ -117,6 +117,18 @@
   ],
   "rl1": [
     {
+      "icon": "🧠",
+      "name": "Reinforcement learning",
+      "description": "Training agents to act by rewarding good decisions and penalising bad ones, learning from trial and error.",
+      "wiki": "Reinforcement_learning"
+    },
+    {
+      "icon": "🤖",
+      "name": "Agent",
+      "description": "The entity that acts inside an environment to reach a goal — on this page it acts at random, perceiving nothing and learning nothing yet.",
+      "wiki": "Intelligent_agent"
+    },
+    {
       "icon": "🎲",
       "name": "Random walk",
       "description": "A path built from successive random steps — the agent's paddle moves up, stays, or down at random, the zero-baseline before any learning.",
