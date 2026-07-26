@@ -244,6 +244,26 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
 .xp-toggle input:checked + .xp-toggle-slider { background: var(--accent); }
 .xp-toggle input:checked + .xp-toggle-slider::before { transform: translateX(18px); }
 
+/* --- Segmented control (tri vrednosti) --- */
+.xp-seg-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 16px auto 0; max-width: min(100%, 72vh); font-size: 13px; }
+.xp-seg { display: flex; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.xp-seg-opt { position: relative; display: flex; cursor: pointer; }
+.xp-seg-opt + .xp-seg-opt { border-left: 1px solid var(--border); }
+.xp-seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+.xp-seg-face { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 16px; transition: background .2s, color .2s; }
+.xp-seg-face em { font-style: normal; font-size: 12px; opacity: .7; }
+.xp-seg-opt input:checked + .xp-seg-face { background: var(--accent); color: #fff; }
+.xp-seg-opt input:checked + .xp-seg-face em { opacity: .9; }
+.xp-seg-opt input:focus-visible + .xp-seg-face { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* --- Training chart + indicators (rl2) --- */
+.xp-chart-wrap { max-width: min(100%, 72vh); margin: 20px auto 0; }
+.xp-chart-wrap canvas { width: 100%; height: auto; display: block; border: 1px solid var(--border); border-radius: 2px; background: var(--surface); }
+.xp-stats { display: flex; justify-content: space-around; gap: 12px; margin-top: 10px; font-size: 13px; flex-wrap: wrap; }
+.xp-stat { text-align: center; min-width: 90px; }
+.xp-stat b { display: block; font-size: 18px; font-weight: 600; color: var(--accent); }
+.xp-stat span { color: var(--text-muted); }
+
 /* --- Infobox (Wikipedia stil) --- */
 .xp-infobox {
   float: right;

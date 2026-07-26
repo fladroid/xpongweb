@@ -134,5 +134,31 @@
       "description": "A path built from successive random steps — the agent's paddle moves up, stays, or down at random, the zero-baseline before any learning.",
       "wiki": "Random_walk"
     }
+  ],
+  "rl2": [
+    {
+      "icon": "🗺️",
+      "name": "State space",
+      "description": "The set of every situation an agent can tell apart. The grid on the court draws two of its five dimensions — where the ball is; direction, speed and paddle position stay invisible.",
+      "wiki": "State_space"
+    },
+    {
+      "icon": "🔲",
+      "name": "Discretization",
+      "description": "Turning continuous values into a finite set of bins. For the agent the ball has no exact coordinate — only a cell, which is why the highlight jumps rather than glides.",
+      "wiki": "Discretization"
+    },
+    {
+      "icon": "🌌",
+      "name": "Curse of dimensionality",
+      "description": "Each added dimension multiplies the states to be visited, so every one is seen more rarely. This is why the finest grid is not the best: 12,000 states learn no better than 4,000, and less reliably.",
+      "wiki": "Curse_of_dimensionality"
+    },
+    {
+      "icon": "⛓️",
+      "name": "Markov decision process",
+      "description": "The formal frame behind this page: states, actions, rewards, and the assumption that the present state alone decides what can happen next.",
+      "wiki": "Markov_decision_process"
+    }
   ]
 }
