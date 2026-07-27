@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's22.3';
+  var XP_VERSION = 's22.4';
   var XP_VERSION_DATE = '27 Jul 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
@@ -73,8 +73,8 @@
       r2_train: 'Train',
       r2_dim_ballx: 'Ball X',
       r2_dim_bally: 'Ball Y',
-      r2_dim_dir: 'Direction',
-      r2_dim_speed: 'Speed',
+      r2_dim_dir: 'Horizontal move',
+      r2_dim_speed: 'Vertical move',
       r2_dim_leftpad: 'Left paddle',
       r2_dim_rightpad: 'Right paddle',
       r2_stat_quality: 'returns / episode',
@@ -182,6 +182,8 @@
       r2_grid_medium: 'Mittel',
       r2_grid_fine: 'Fein',
       r2_train: 'Trainieren',
+      r2_dim_dir: 'Horizontale Bewegung',
+      r2_dim_speed: 'Vertikale Bewegung',
       r2_stat_quality: 'Abwehr / Episode',
       r2_stat_spread: 'Streuung',
       r2_stat_speed: 'Schritte / s',
@@ -286,6 +288,8 @@
       r2_grid_medium: 'Media',
       r2_grid_fine: 'Fine',
       r2_train: 'Addestra',
+      r2_dim_dir: 'Movimento orizzontale',
+      r2_dim_speed: 'Movimento verticale',
       r2_stat_quality: 'respinte / episodio',
       r2_stat_spread: 'dispersione',
       r2_stat_speed: 'passi / s',
@@ -390,6 +394,8 @@
       r2_grid_medium: 'Srednja',
       r2_grid_fine: 'Fina',
       r2_train: 'Treniraj',
+      r2_dim_dir: 'Horizontalno kretanje',
+      r2_dim_speed: 'Vertikalno kretanje',
       r2_stat_quality: 'odbijanja / epizoda',
       r2_stat_spread: 'raspon',
       r2_stat_speed: 'koraka / s',
@@ -495,6 +501,8 @@
         r2_grid_medium: '\u0421\u0440\u0435\u0434\u045a\u0430',
         r2_grid_fine: '\u0424\u0438\u043d\u0430',
         r2_train: '\u0422\u0440\u0435\u043d\u0438\u0440\u0430\u0458',
+        r2_dim_dir: 'Хоризонтално кретање',
+        r2_dim_speed: 'Вертикално кретање',
         r2_stat_quality: '\u043e\u0434\u0431\u0438\u0458\u0430\u045a\u0430 / \u0435\u043f\u0438\u0437\u043e\u0434\u0430',
         r2_stat_spread: '\u0440\u0430\u0441\u043f\u043e\u043d',
         r2_stat_speed: '\u043a\u043e\u0440\u0430\u043a\u0430 / \u0441',
