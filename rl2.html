@@ -80,7 +80,9 @@
           </div>
 
           <div class="xp-chart-wrap">
+            <h3 class="xp-chart-title" data-i18n="r2_chart_title">Evaluation quality across training</h3>
             <canvas id="r2-chart" width="800" height="300"></canvas>
+            <p class="xp-chart-caption" data-i18n="r2_chart_caption">X axis: training episode, 0 to 12,000. Y axis: average returns per evaluation -- the same number as "returns / episode" below.</p>
             <div class="xp-stats" id="r2-stats"></div>
           </div>
 
@@ -88,8 +90,12 @@
 
         <aside class="xray-side">
           <div class="xp-infobox">
-            <div class="xp-infobox-title" data-i18n="r2_page_title">This page — RL 1</div>
-            <p class="xp-infobox-text" data-i18n-html="r2_page_text">The first RL page. The right paddle is an <strong>agent that plays but does not learn</strong> — a <em>random walker</em>, the zero-baseline of reinforcement learning: each step it moves up, stays, or moves down at random, with no memory and no goal. Use the switch to make the left paddle a human (W/S) or a second agent. The Beam and Heatmap below read the <em>world</em> — the ball's path and past goals — not the agent's mind: there is no mind here yet to X-ray. A learning agent, and the telemetry of its decisions, arrives on the next page.</p>
+            <div class="xp-infobox-title" data-i18n="r2_page_title">State space</div>
+            <p class="xp-infobox-text" data-i18n-html="r2_page_text">This is the first RL page with an agent that <strong>learns</strong>. The subject here is not learning itself but what the agent can <em>see</em>: the world reduced to a finite set of bins. The grid draws two of the five dimensions -- where the ball is. Direction, speed, and the paddle's own position also enter the state number but have no place on the court. Coarse, medium, and fine give the agent a coarser or finer view of the same world.</p>
+          </div>
+          <div class="xp-infobox">
+            <div class="xp-infobox-title" data-i18n="r2_results_title">Reading the results</div>
+            <p class="xp-infobox-text" data-i18n-html="r2_results_text">Press Train: it runs 12,000 episodes in the background, and every 500 episodes it pauses to play one evaluation match <em>live</em> -- the agent's actual policy at that point, no exploration. The chart plots average returns per evaluation episode; the current run stays dark, earlier runs fade to grey. Train again after a run finishes to add a new curve -- the <em>spread</em> between curves is the reliability of the result, not the height of any single line alone. Reset clears everything and starts over.</p>
           </div>
           <div class="xp-infobox xp-xray-box">
             <div class="xp-infobox-title" data-i18n="x_box_title">Beam</div>
@@ -98,10 +104,6 @@
           <div class="xp-infobox">
             <div class="xp-infobox-title" data-i18n="x_heat_box_title">Heatmap</div>
             <p class="xp-infobox-text" data-i18n="x_heat_box_text">The heatmap is a shadow, not a mind: it records only where the ball has physically crossed each goal line. Thin frames mark the bands on each wall; a band grows darker the more goals have landed in it. Counts accumulate through the session — Reset clears them. Toggle it with the Heatmap switch or the h key.</p>
-          </div>
-          <div class="xp-infobox">
-            <div class="xp-infobox-title" data-i18n="x_nav_title">Navigation</div>
-            <p class="xp-infobox-text" data-i18n="r2_nav_text">Left player (human mode): W up, S down, or drag on the left half on touch. The right player is the agent. Flip the left paddle to an agent with the switch by the controls.</p>
           </div>
         </aside>
       </div>
