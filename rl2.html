@@ -17,20 +17,6 @@
       <div id="xray-layout">
         <div class="xray-main">
 
-          <div class="xp-game-scorebar">
-            <div>
-              <span class="xp-game-score-label" data-i18n="g_left">Left</span>
-              <span class="xp-game-score" id="xp-score-l">0</span>
-            </div>
-            <span class="xp-game-score-sep">:</span>
-            <div>
-              <span class="xp-game-score-label" data-i18n="g_right">Right</span>
-              <span class="xp-game-score" id="xp-score-r">0</span>
-            </div>
-          </div>
-
-          <div class="xp-game-winner" id="xp-winner"></div>
-
           <div id="r2-state-table" class="xp-state-table"></div>
 
           <div class="xp-game-canvas-box">
@@ -39,22 +25,14 @@
 
           <div class="xp-game-deck">
             <div class="xp-game-legend-side xp-game-deck-left">
-              <span class="xp-toggle-wrap">
-                <label class="xp-toggle">
-                  <input type="checkbox" id="rl1-left-mode">
-                  <span class="xp-toggle-slider"></span>
-                </label>
-                <label id="rl1-left-mode-lbl">Left: Human</label>
-              </span>
               <strong data-i18n="g_legend_left">Left player</strong>
-              <div class="xp-keys"><kbd>W</kbd> / <kbd>S</kbd></div>
+              <div class="xp-keys" data-i18n="r2_legend_left_agent">Learning agent</div>
             </div>
 
             <div class="xp-game-deck-center">
               <div class="xp-game-status" id="xp-game-status"></div>
               <div class="xp-game-controls">
                 <div class="xp-controls-row">
-                  <button class="xp-game-btn xp-game-btn-primary" id="xp-btn-start" data-i18n="g_start">Start</button>
                   <button class="xp-game-btn xp-game-btn-primary" id="r2-btn-train" data-i18n="r2_train">Train</button>
                   <button class="xp-game-btn" id="xp-btn-reset" data-i18n="g_reset">Reset</button>
                 </div>

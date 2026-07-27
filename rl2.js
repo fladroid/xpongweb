@@ -1,18 +1,20 @@
-/* xpong — rl1.js : M3 page 1 — random-walker agent (no learning).
-   Clone of xray.js (family layout: beam + heatmap + infoboxes). The only
-   change is the SOURCE of paddle movement: the right paddle is ALWAYS a
-   random-walker agent, the left is human (W/S) or agent via a mode switch.
-   The agent has NO memory and does NOT learn — a random baseline. The
-   beam and heatmap read the WORLD, not the agent (no mind here to X-ray).
-   --- original xray.js header below ---
+/* xpong — rl2.js : M3 page 2 — state space + Q-learning agent (live evaluation).
+   The left paddle is a tabular Q-learning agent; the right is the random-walker
+   baseline from rl1, unchanged. Bulk training (thousands of episodes) runs
+   headless for speed. Every EVAL_EVERY episodes, a fresh evaluation number is
+   measured headless (for the chart), then ONE evaluation episode is replayed
+   live on the court -- greedy policy, real time -- so the numbers on the graph
+   have a visible referent. The state-space grid, the six-value state table,
+   the beam and the heatmap all read this live episode the same way they read
+   free play on earlier pages. There is no free-play mode on this page anymore
+   (s22 redesign) -- rl1 already covers "play against the world"; this page is
+   only about what the agent has learned to do with it.
+   Clone lineage: rl1.js (random-walker agent, no learning) <- xray.js (M2
+   telemetry: beam + heatmap + infoboxes). --- original xray.js header below ---
    xpong — xray.js : M2 brick 1 — the trajectory ray (laser).
    Standalone consumer of window.xpong.PongCore (loaded before this file).
-   Same input/render skeleton as game.js, PLUS an honest predicted-path ray:
-   it casts the ball forward by pure physics to the FIRST obstacle
-   (wall / paddle / goal), draws a dashed line that fades toward the end,
-   and marks the contact point on walls/paddles (not goals).
-   No intelligence: the ray reveals the rule, it does not predict the bounce
-   or anyone's decision — it stops where certainty ends. */
+   No intelligence in the ray itself: it reveals the rule, it does not predict
+   the bounce or anyone's decision — it stops where certainty ends. */
 (function () {
   'use strict';
 
@@ -26,126 +28,30 @@
   var colors = {};
 
   var state;
-  var running, gameOver;
   var rayOn = false;                // X-Ray overlay toggle (off at start)
   var heatOn = false;               // goal heatmap toggle (off at start)
   var HEAT_BANDS = 4;               // horizontal bands per goal line (coarse)
   var goalsLeftWall  = [0,0,0,0];   // goals entering the LEFT wall (right player scored), by band
   var goalsRightWall = [0,0,0,0];   // goals entering the RIGHT wall (left player scored), by band
-  var keys = {};
   var raf = null;
-  var leftIsAgent = false;          // false: left = human (W/S); true: left = agent
 
-  function newGame() {
+  // Fresh court, ball re-served -- used at load, at the start of each live
+  // evaluation episode, and whenever the agent scores and the episode re-serves.
+  function newLiveState() {
     state = Core.newState();
     Core.resetBall(state, Math.random() < 0.5 ? 1 : -1);
-    gameOver = false;
-    running = false;
-    rayOn = false; heatOn = false;
-    goalsLeftWall = [0,0,0,0]; goalsRightWall = [0,0,0,0];
-    updateHUD();
-    draw();
   }
 
-  // --- input: keyboard (same scheme as the game) ---
+  // --- x/h toggle keys only -- no paddle input on this page anymore ---
   function onKeyDown(e) {
     var k = e.key;
-    if (k === 'w' || k === 'W' || k === 's' || k === 'S' ||
-        k === 'o' || k === 'O' || k === 'l' || k === 'L') {
-      keys[k.length === 1 ? k.toLowerCase() : k] = true;
-      e.preventDefault();
-    }
-    if (k === ' ') { toggleRun(); e.preventDefault(); }
     if (k === 'x' || k === 'X') { toggleRay(); e.preventDefault(); }
     if (k === 'h' || k === 'H') { toggleHeat(); e.preventDefault(); }
   }
-  function onKeyUp(e) {
-    var k = e.key;
-    keys[k.length === 1 ? k.toLowerCase() : k] = false;
-  }
 
-  // --- input: touch (each half controls its paddle) ---
-  var touchTargets = {};
-  function touchToLogical(clientY) {
-    var r = canvas.getBoundingClientRect();
-    return (clientY - r.top) / r.height * H;
-  }
-  function onTouchStart(e) {
-    var r = canvas.getBoundingClientRect();
-    for (var i = 0; i < e.changedTouches.length; i++) {
-      var t = e.changedTouches[i];
-      var side = (t.clientX - r.left) < r.width / 2 ? 'L' : 'R';
-      touchTargets[t.identifier] = { side: side, y: touchToLogical(t.clientY) };
-    }
-    if (!running && !gameOver) toggleRun();
-    e.preventDefault();
-  }
-  function onTouchMove(e) {
-    for (var i = 0; i < e.changedTouches.length; i++) {
-      var t = e.changedTouches[i];
-      if (touchTargets[t.identifier]) touchTargets[t.identifier].y = touchToLogical(t.clientY);
-    }
-    e.preventDefault();
-  }
-  function onTouchEnd(e) {
-    for (var i = 0; i < e.changedTouches.length; i++) {
-      delete touchTargets[e.changedTouches[i].identifier];
-    }
-    e.preventDefault();
-  }
-
-  function applyTouch(paddle, side) {
-    var target = null;
-    for (var id in touchTargets) {
-      if (touchTargets[id].side === side) { target = touchTargets[id].y; break; }
-    }
-    if (target === null) return false;
-    var center = paddle.y + C.PADDLE_H / 2;
-    var diff = target - center;
-    var step = Math.max(-C.PADDLE_SPEED * 1.6, Math.min(C.PADDLE_SPEED * 1.6, diff));
-    paddle.y += step;
-    return true;
-  }
-
-  // --- random-walker agent: pick -1/0/+1 each step, no state, no learning ---
+  // --- random-walker agent (right paddle): pick -1/0/+1 each step ---
   function agentAction() { return Math.floor(Math.random() * 3) - 1; }
   function applyAgent(paddle) { paddle.y += agentAction() * C.PADDLE_SPEED * 2; }  // x2: wider random walk
-
-  // --- one simulation step: move paddles from input/agent, then ball via core ---
-  function step() {
-    var left = state.left, right = state.right;
-    // left: human (touch/keys) or agent, per mode switch
-    if (leftIsAgent) {
-      applyAgent(left);
-    } else if (!applyTouch(left, 'L')) {
-      if (keys['w']) left.y -= C.PADDLE_SPEED;
-      if (keys['s']) left.y += C.PADDLE_SPEED;
-    }
-    // right: always the agent
-    applyAgent(right);
-    Core.clampPaddle(left); Core.clampPaddle(right);
-
-    var hit = Core.stepBall(state);
-    if (hit === 'goalL' || hit === 'goalR') {
-      var band = Math.floor(state.ball.y / (H / HEAT_BANDS));
-      if (band < 0) band = 0; if (band > HEAT_BANDS - 1) band = HEAT_BANDS - 1;
-      if (hit === 'goalR') goalsLeftWall[band]++; else goalsRightWall[band]++;
-      afterPoint(hit === 'goalR' ? -1 : 1);
-    }
-  }
-
-  function afterPoint(serveDir) {
-    updateHUD();
-    if (state.scoreL >= C.WIN_SCORE || state.scoreR >= C.WIN_SCORE) {
-      gameOver = true; running = false;
-      state.winner = state.scoreL > state.scoreR ? 'L' : 'R';
-      updateHUD();
-      return;
-    }
-    Core.resetBall(state, serveDir);
-    running = false;
-    updateHUD();
-  }
 
   // --- render ---
   function readColors() {
@@ -181,14 +87,13 @@
     var rgb = toRGB(colors.accent);
     var bandH = H / HEAT_BANDS;
     var bw = 22;                      // band width, hugging the wall (wider: room for count)
-    // thin frames mark where the shadow will grow - visible before any goal
     ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0.25)';
     ctx.lineWidth = 1;
     for (i = 0; i < HEAT_BANDS; i++) {
       ctx.strokeRect(0.5, i * bandH + 0.5, bw, bandH - 1);
       ctx.strokeRect(W - bw - 0.5, i * bandH + 0.5, bw, bandH - 1);
     }
-    if (max === 0) return;            // frames only, nothing recorded yet
+    if (max === 0) return;
     for (i = 0; i < HEAT_BANDS; i++) {
       if (goalsLeftWall[i] > 0) {
         ctx.fillStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.15 + 0.65 * goalsLeftWall[i] / max) + ')';
@@ -199,7 +104,6 @@
         ctx.fillRect(W - bw, i * bandH, bw, bandH);
       }
     }
-    // goal counts on filled bands - text glyph on a surface disc (theme-aware)
     ctx.font = '15px "Share Tech Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -220,8 +124,6 @@
 
   // Draw the predicted ray: dashed, fading toward the end, marker at contact.
   function drawRay() {
-    // ball still at the center serve point - no ray/marker here;
-    // the ON ring on the ball carries the layer-active signal.
     if (Math.abs(state.ball.x - W / 2) < 1 && Math.abs(state.ball.y - H / 2) < 1) return;
     var ray = Core.castRay(state, 800);
     var pts = ray.points;
@@ -234,12 +136,11 @@
     ctx.lineWidth = 2.5;
     ctx.setLineDash([7, 9]);
     ctx.lineCap = 'round';
-    var dim = running ? 1 : 0.55;              // paler while the game is not live
+    var dim = liveEval ? 1 : 0.55;             // paler while a live episode isn't playing
 
-    // draw segment-by-segment so alpha can fade along the path
     for (var i = 0; i < n; i++) {
-      var frac = i / n;                       // 0 at ball, 1 at obstacle
-      var alpha = (0.55 * (1 - frac) + 0.06) * dim;   // fade, never fully gone
+      var frac = i / n;
+      var alpha = (0.55 * (1 - frac) + 0.06) * dim;
       ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha.toFixed(3) + ')';
       ctx.beginPath();
       ctx.moveTo(pts[i].x, pts[i].y);
@@ -248,7 +149,6 @@
     }
     ctx.setLineDash([]);
 
-    // contact marker — only on real obstacles (wall/paddle), not goals
     if (ray.stop === 'wall' || ray.stop === 'paddleL' || ray.stop === 'paddleR') {
       var end = pts[pts.length - 1];
       ctx.strokeStyle = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + (0.9 * dim).toFixed(3) + ')';
@@ -261,9 +161,6 @@
   }
 
   // --- State-space grid (rl2) --------------------------------------------
-  // The full state has five dimensions; only ball X/Y have a place on the
-  // court, so the grid draws two of five. The other three stay invisible --
-  // that gap is itself the lesson, and the infobox says so.
   var GRIDS = {
     '300':   { x: 5,  y: 5,  dx: 2, dy: 3, pad: 2 },
     '4000':  { x: 10, y: 8,  dx: 2, dy: 5, pad: 5 },
@@ -271,15 +168,11 @@
   };
   var gridKey = '4000';
 
-  // Snap a continuous value into one of n bins, clamped at both ends.
   function binOf(v, min, max, n) {
     var i = Math.floor((v - min) / (max - min) * n);
     return i < 0 ? 0 : (i >= n ? n - 1 : i);
   }
 
-  // Mixed-radix encoding of all five dimensions into ONE integer -- the same
-  // trick a clock uses to pack h/m/s into a single number. This is the whole
-  // world as the agent sees it: not coordinates, but a bin index.
   function encodeState(g, st) {
     st = st || state;
     var b = st.ball, V = C.BALL_SPEED_MAX;
@@ -294,8 +187,6 @@
   function gridTotal(g) { return g.x * g.y * g.dx * g.dy * g.pad; }
 
   // --- Q-learning core (rl2) ---------------------------------------------
-  // Tabular Q: one row per state, three columns (up / stay / down).
-  // Float32Array keeps 12,000 states at 144 KB -- trivial on any device.
   var Q = null, qN = 0;
   var LR = 0.15, GAMMA = 0.95;
   var eps = 1.0, EPS_MIN = 0.05, EPS_DECAY = 0.9995;
@@ -306,10 +197,6 @@
     eps = 1.0;
   }
 
-  // epsilon-greedy: explore with probability eps, otherwise take the best
-  // known action. Ties are broken AT RANDOM -- with a zero-initialised table
-  // every state starts tied, and a fixed tie-break would pin the paddle to
-  // one action forever (it did: 'up', for every unvisited state).
   function qAction(si, explore) {
     if (explore && Math.random() < eps) return (Math.random() * 3) | 0;
     var b = si * 3, a0 = Q[b], a1 = Q[b + 1], a2 = Q[b + 2];
@@ -321,7 +208,6 @@
     return t.length === 1 ? t[0] : t[(Math.random() * t.length) | 0];
   }
 
-  // Bellman update -- the single place where the agent learns.
   function qUpdate(si, a, r, si2) {
     var b = si * 3, b2 = si2 * 3;
     var mx = Q[b2]; if (Q[b2 + 1] > mx) mx = Q[b2 + 1]; if (Q[b2 + 2] > mx) mx = Q[b2 + 2];
@@ -329,8 +215,6 @@
   }
 
   // --- headless episode ---------------------------------------------------
-  // One episode = serve to goal. Reward: +1 for a return, -1 for conceding.
-  // Quality = returns per episode, which is what the s19 measurement reports.
   var EP_MAX_STEPS = 4000;
 
   function runEpisode(g, learn) {
@@ -351,9 +235,6 @@
       if (learn) qUpdate(si, a, r, si2);
       si = si2;
       steps++;
-      // An episode lasts until the AGENT concedes. A goal the agent scores
-      // just re-serves -- otherwise a weak opponent ends episodes early and
-      // caps the score no matter how good the agent is. (Measured: 3.4x.)
       if (hit === 'goalR') break;
       if (hit === 'goalL') {
         Core.resetBall(st, Math.random() < 0.5 ? 1 : -1);
@@ -364,8 +245,6 @@
     return { hits: hits, steps: steps };
   }
 
-  // Greedy evaluation: no exploration, no learning. Separate from training
-  // on purpose -- measuring during training measures the epsilon schedule.
   function evaluate(g, n) {
     var savedEps = eps;
     eps = 0;
@@ -375,20 +254,73 @@
     return tot / n;
   }
 
+  // --- live evaluation: one episode replayed on the canvas in real time ---
+  // Same rule as runEpisode(): the episode lasts until the AGENT concedes
+  // (goalR); a goal the agent scores (goalL) just re-serves. Capped in frames
+  // so a good agent (long rallies) cannot stall the training loop forever.
+  var liveEval = false;
+  var liveEvalFrames = 0;
+  var LIVE_EVAL_MAX_FRAMES = 900;   // ~15s at 60fps
+
+  function startLiveEval() {
+    liveEval = true;
+    liveEvalFrames = 0;
+    newLiveState();
+    updateHUD();
+  }
+
+  function liveStep() {
+    var g = GRIDS[gridKey];
+    var si = encodeState(g, state);
+    var a = qAction(si, false);            // greedy -- the trained policy, no exploration
+    state.left.y += (a - 1) * C.PADDLE_SPEED;
+    applyAgent(state.right);
+    Core.clampPaddle(state.left); Core.clampPaddle(state.right);
+    var hit = Core.stepBall(state);
+    if (hit === 'goalL' || hit === 'goalR') {
+      var band = Math.floor(state.ball.y / (H / HEAT_BANDS));
+      if (band < 0) band = 0; if (band > HEAT_BANDS - 1) band = HEAT_BANDS - 1;
+      if (hit === 'goalR') goalsLeftWall[band]++; else goalsRightWall[band]++;
+    }
+    liveEvalFrames++;
+    if (hit === 'goalR' || liveEvalFrames >= LIVE_EVAL_MAX_FRAMES) {
+      endLiveEval();
+      return;
+    }
+    if (hit === 'goalL') newLiveState();
+  }
+
+  function endLiveEval() {
+    liveEval = false;
+    if (trainEp < TRAIN_EPISODES) {
+      trainRun = true;
+      updateHUD();
+      requestAnimationFrame(trainTick);
+    } else {
+      setGridControlsEnabled(true);
+      if (elBtnTrain) elBtnTrain.disabled = false;
+      updateHUD();
+    }
+  }
+
   // --- training loop (headless, self-tuning batch) ------------------------
-  // A fixed batch that takes 3 ms on a PC takes 150 ms on an old phone and
-  // freezes the UI. So the batch measures itself and aims to stay under 8 ms.
-  // The measured rate is published in the HUD -- adaptation must be visible.
   var TRAIN_EPISODES = 12000, EVAL_EVERY = 500, EVAL_N = 50;
   var trainRun = false, trainEp = 0, batch = 20, stepsPerSec = 0;
   var curves = [], curve = null;
+
+  function setGridControlsEnabled(enabled) {
+    var segIn = document.querySelectorAll('input[name="r2-grid"]');
+    for (var i = 0; i < segIn.length; i++) segIn[i].disabled = !enabled;
+  }
 
   function trainStart() {
     var g = GRIDS[gridKey];
     qReset(g);
     trainEp = 0; batch = 20;
     curve = []; curves.push(curve);
-    trainRun = true;
+    trainRun = true; liveEval = false;
+    setGridControlsEnabled(false);
+    if (elBtnTrain) elBtnTrain.disabled = true;
     updateHUD();
     requestAnimationFrame(trainTick);
   }
@@ -396,10 +328,15 @@
   function trainTick() {
     if (!trainRun) return;
     var g = GRIDS[gridKey], t0 = performance.now(), steps = 0, i;
+    var hitEval = false;
     for (i = 0; i < batch && trainEp < TRAIN_EPISODES; i++) {
       steps += runEpisode(g, true).steps;
       trainEp++;
-      if (trainEp % EVAL_EVERY === 0) curve.push({ ep: trainEp, q: evaluate(g, EVAL_N) });
+      if (trainEp % EVAL_EVERY === 0) {
+        curve.push({ ep: trainEp, q: evaluate(g, EVAL_N) });
+        hitEval = true;
+        break;
+      }
     }
     var dt = performance.now() - t0;
     if (dt > 0.5) {
@@ -408,9 +345,37 @@
     }
     drawChart();
     renderStats();
+
+    if (trainEp >= TRAIN_EPISODES) {
+      trainRun = false;
+      setGridControlsEnabled(true);
+      if (elBtnTrain) elBtnTrain.disabled = false;
+      updateHUD();
+      return;
+    }
+    if (hitEval) {
+      trainRun = false;
+      startLiveEval();
+      return;
+    }
     updateHUD();
-    if (trainEp >= TRAIN_EPISODES) { trainRun = false; updateHUD(); }
-    else requestAnimationFrame(trainTick);
+    requestAnimationFrame(trainTick);
+  }
+
+  function resetTraining() {
+    trainRun = false; liveEval = false;
+    trainEp = 0; batch = 20; stepsPerSec = 0;
+    curves = []; curve = null;
+    Q = null; qN = 0; eps = 1.0;
+    rayOn = false; heatOn = false;
+    goalsLeftWall = [0,0,0,0]; goalsRightWall = [0,0,0,0];
+    newLiveState();
+    setGridControlsEnabled(true);
+    if (elBtnTrain) elBtnTrain.disabled = false;
+    drawChart();
+    renderStats();
+    updateHUD();
+    draw();
   }
 
   // --- chart: every run ADDS a curve; the spread IS the reliability --------
@@ -478,7 +443,6 @@
   }
 
   // Three indicators, never a composite number: quality, spread, speed.
-  // Spread only appears from the second run on -- it cannot exist before.
   function renderStats() {
     var el = document.getElementById('r2-stats');
     if (!el) return;
@@ -488,8 +452,6 @@
       if (c2.length) ends.push(c2[c2.length - 1].q);
     }
     var lastQ = ends.length ? ends[ends.length - 1] : 0;
-    // Std deviation, NOT max-min: the range grows with the number of runs,
-    // so it would measure how often you pressed the button, not reliability.
     var spread = null;
     if (ends.length > 1) {
       var mean = 0, v = 0, q;
@@ -512,7 +474,6 @@
     if (!g) return;
     var cw = W / g.x, ch = H / g.y;
 
-    // the bin the ball is in right now -- drawn under the grid lines
     if (state && state.ball) {
       var a = toRGB(colors.accent);
       ctx.fillStyle = 'rgba(' + a[0] + ',' + a[1] + ',' + a[2] + ',0.12)';
@@ -533,7 +494,6 @@
       ctx.moveTo(0, py); ctx.lineTo(W, py);
     }
     ctx.stroke();
-
   }
 
   function draw() {
@@ -545,7 +505,6 @@
     ctx.fillStyle = colors.bg;
     ctx.fillRect(0, 0, W, H);
 
-    // state-space grid: deepest layer -- the coordinate system itself
     drawGrid();
     renderStateTable();
 
@@ -555,9 +514,7 @@
     ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
     ctx.setLineDash([]);
 
-    // heatmap is the deepest layer (shadow of past goals), under everything
     if (heatOn) drawHeatmap();
-    // ray sits under the ball/paddles so the play stays legible on top
     if (rayOn) drawRay();
 
     ctx.fillStyle = colors.fg;
@@ -567,8 +524,6 @@
     ctx.fillStyle = colors.accent;
     ctx.beginPath(); ctx.arc(ball.x, ball.y, C.BALL_R, 0, Math.PI * 2); ctx.fill();
 
-    // ray-ON indicator: ring on the ball (the beam's source), visible even at
-    // the center serve where no ray is drawn - mirrors heatmap's frame-when-empty
     if (rayOn) {
       var rr = toRGB(colors.accent);
       ctx.strokeStyle = 'rgba(' + rr[0] + ',' + rr[1] + ',' + rr[2] + ',0.9)';
@@ -579,54 +534,37 @@
     ctx.restore();
   }
 
-  // --- loop ---
+  // --- loop: only the live evaluation episode advances the world; bulk
+  // headless training leaves the court still (it doesn't touch `state`) ---
   function frame() {
-    if (running && !gameOver) step();
+    if (liveEval) liveStep();
     draw();
     raf = requestAnimationFrame(frame);
   }
 
   // --- HUD wiring (i18n via window.xpong.t with EN fallback) ---
-  var elScoreL, elScoreR, elBtnStart, elStatus, elTglRay, elTglHeat, elLblRay, elLblHeat, elWinner, elModeLbl;
+  var elStatus, elTglRay, elTglHeat, elLblRay, elLblHeat, elBtnTrain;
   function gt(key, en) {
     return (window.xpong && window.xpong.t) ? window.xpong.t(key) : en;
   }
   function updateHUD() {
-    if (elScoreL) elScoreL.textContent = state.scoreL;
-    if (elScoreR) elScoreR.textContent = state.scoreR;
-    if (elWinner) {
-      elWinner.textContent = gameOver
-        ? (state.winner === 'L' ? gt('g_left', 'Left') : gt('g_right', 'Right')) + ' ' + gt('g_wins', 'wins!')
-        : '';
-    }
-    if (elBtnStart) {
-      elBtnStart.textContent = running ? gt('g_pause', 'Pause')
-        : (gameOver ? gt('g_again', 'Play again') : gt('g_start', 'Start'));
-    }
     if (elTglHeat) elTglHeat.checked = heatOn;
     if (elLblHeat) elLblHeat.textContent = (heatOn ? gt('x_heat_on', 'Heatmap: on')
                                                    : gt('x_heat_off', 'Heatmap: off'));
     if (elTglRay) elTglRay.checked = rayOn;
     if (elLblRay) elLblRay.textContent = (rayOn ? gt('x_ray_on', 'X-Ray: on')
                                                 : gt('x_ray_off', 'X-Ray: off'));
-    if (elModeLbl) elModeLbl.textContent = leftIsAgent ? gt('r1_mode_agent', 'Left: Agent') : gt('r1_mode_human', 'Left: Human');
     if (elStatus) {
-      if (gameOver) {
-        elStatus.textContent = gt('g_new_set', 'Set over \u2014 press the button for a new set');
-      } else if (!running && (state.scoreL > 0 || state.scoreR > 0)) {
-        elStatus.textContent = gt('g_serve_hint', 'Press Space or tap to serve');
-      } else if (!running) {
-        elStatus.textContent = gt('g_start_hint', 'Press Space or tap to start');
+      if (liveEval) {
+        elStatus.textContent = gt('r2_status_watching', 'Watching the agent play');
+      } else if (trainRun) {
+        elStatus.textContent = gt('r2_status_training', 'Training\u2026') + ' ' + trainEp + ' / ' + TRAIN_EPISODES;
+      } else if (trainEp > 0 && trainEp >= TRAIN_EPISODES) {
+        elStatus.textContent = gt('r2_status_done', 'Training complete');
       } else {
-        elStatus.textContent = '';
+        elStatus.textContent = gt('r2_status_idle', 'Press Train to begin');
       }
     }
-  }
-
-  function toggleRun() {
-    if (gameOver) { newGame(); running = true; updateHUD(); return; }
-    running = !running;
-    updateHUD();
   }
 
   function toggleRay() {
@@ -658,28 +596,17 @@
     canvas = document.getElementById('xp-game');
     if (!canvas) return;
     ctx = canvas.getContext('2d');
-    elScoreL   = document.getElementById('xp-score-l');
-    elScoreR   = document.getElementById('xp-score-r');
-    elBtnStart = document.getElementById('xp-btn-start');
     elStatus   = document.getElementById('xp-game-status');
     elTglRay   = document.getElementById('xp-toggle-ray');
     elTglHeat  = document.getElementById('xp-toggle-heat');
     elLblRay   = document.getElementById('xp-lbl-ray');
     elLblHeat  = document.getElementById('xp-lbl-heat');
-    elWinner   = document.getElementById('xp-winner');
+    elBtnTrain = document.getElementById('r2-btn-train');
 
     var btnReset = document.getElementById('xp-btn-reset');
-    if (elBtnStart) elBtnStart.addEventListener('click', toggleRun);
-    if (btnReset)   btnReset.addEventListener('click', function () { newGame(); });
-    if (elTglRay)   elTglRay.addEventListener('change', function () { rayOn = elTglRay.checked; updateHUD(); draw(); });
-    if (elTglHeat)  elTglHeat.addEventListener('change', function () { heatOn = elTglHeat.checked; updateHUD(); draw(); });
-
-    var elMode = document.getElementById('rl1-left-mode');
-    elModeLbl = document.getElementById('rl1-left-mode-lbl');
-    if (elMode) elMode.addEventListener('change', function () {
-      leftIsAgent = elMode.checked;
-      updateHUD();
-    });
+    if (btnReset)  btnReset.addEventListener('click', resetTraining);
+    if (elTglRay)  elTglRay.addEventListener('change', function () { rayOn = elTglRay.checked; updateHUD(); draw(); });
+    if (elTglHeat) elTglHeat.addEventListener('change', function () { heatOn = elTglHeat.checked; updateHUD(); draw(); });
 
     chart = document.getElementById('r2-chart');
     if (chart) {
@@ -688,9 +615,8 @@
       chart.width = 800 * cdpr; chart.height = 300 * cdpr;
     }
 
-    var btnTrain = document.getElementById('r2-btn-train');
-    if (btnTrain) btnTrain.addEventListener('click', function () {
-      if (trainRun) { trainRun = false; updateHUD(); return; }
+    if (elBtnTrain) elBtnTrain.addEventListener('click', function () {
+      if (trainRun || liveEval) return;   // guard; button is also disabled while active
       trainStart();
       var wrap = document.querySelector('.xp-chart-wrap');
       if (wrap && wrap.scrollIntoView) wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -705,17 +631,13 @@
     }
 
     readColors();
-    newGame();
+    newLiveState();
     drawChart();
     renderStats();
+    updateHUD();
     resize();
 
     window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
-    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-    canvas.addEventListener('touchmove',  onTouchMove,  { passive: false });
-    canvas.addEventListener('touchend',   onTouchEnd,   { passive: false });
-    canvas.addEventListener('touchcancel', onTouchEnd,  { passive: false });
     window.addEventListener('resize', resize);
     window.addEventListener('xpong:langchange', function () { updateHUD(); renderStats(); renderStateTable(); });
 
