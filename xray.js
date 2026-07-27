@@ -390,6 +390,7 @@
     canvas.addEventListener('touchend',   onTouchEnd,   { passive: false });
     canvas.addEventListener('touchcancel', onTouchEnd,  { passive: false });
     window.addEventListener('resize', resize);
+    window.addEventListener('xpong:langchange', updateHUD);
 
     var obs = new MutationObserver(function () { readColors(); draw(); updateHUD(); });
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'lang'] });

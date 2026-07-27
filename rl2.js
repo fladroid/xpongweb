@@ -454,6 +454,29 @@
     chartCtx.restore();
   }
 
+  // All five state dimensions as a plain table, plus the sixth value the
+  // agent does NOT use (opponent paddle) shown separately for contrast.
+  function renderStateTable() {
+    var el = document.getElementById('r2-state-table');
+    if (!el || !state || !state.ball) return;
+    var g = GRIDS[gridKey];
+    var b = state.ball, V = C.BALL_SPEED_MAX;
+    var ix  = binOf(b.x, 0, W, g.x);
+    var iy  = binOf(b.y, 0, H, g.y);
+    var idx = binOf(b.vx, -V, V, g.dx);
+    var idy = binOf(b.vy, -V, V, g.dy);
+    var ip  = binOf(state.left.y, 0, H - C.PADDLE_H, g.pad);
+    var irp = binOf(state.right.y, 0, H - C.PADDLE_H, g.pad);
+    el.innerHTML =
+      '<div class="xp-state-head">state ' + encodeState(g) + ' / ' + gridTotal(g) + '</div>' +
+      '<div class="xp-state-row"><span>' + gt('r2_dim_ballx', 'Ball X') + '</span><b>' + ix + '</b></div>' +
+      '<div class="xp-state-row"><span>' + gt('r2_dim_bally', 'Ball Y') + '</span><b>' + iy + '</b></div>' +
+      '<div class="xp-state-row"><span>' + gt('r2_dim_dir', 'Direction') + '</span><b>' + idx + ' / ' + g.dx + '</b></div>' +
+      '<div class="xp-state-row"><span>' + gt('r2_dim_speed', 'Speed') + '</span><b>' + idy + ' / ' + g.dy + '</b></div>' +
+      '<div class="xp-state-row"><span>' + gt('r2_dim_leftpad', 'Left paddle') + '</span><b>' + ip + ' / ' + g.pad + '</b></div>' +
+      '<div class="xp-state-row xp-state-out"><span>' + gt('r2_dim_rightpad', 'Right paddle') + '</span><b>' + irp + ' / ' + g.pad + '</b></div>';
+  }
+
   // Three indicators, never a composite number: quality, spread, speed.
   // Spread only appears from the second run on -- it cannot exist before.
   function renderStats() {
@@ -511,13 +534,6 @@
     }
     ctx.stroke();
 
-    // telemetry: the entire world collapsed into one integer
-    if (state && state.ball) {
-      ctx.fillStyle = colors.muted;
-      ctx.font = '13px monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('state ' + encodeState(g) + ' / ' + gridTotal(g), 10, 20);
-    }
   }
 
   function draw() {
@@ -531,6 +547,7 @@
 
     // state-space grid: deepest layer -- the coordinate system itself
     drawGrid();
+    renderStateTable();
 
     ctx.strokeStyle = colors.line;
     ctx.lineWidth = 3;
@@ -700,6 +717,7 @@
     canvas.addEventListener('touchend',   onTouchEnd,   { passive: false });
     canvas.addEventListener('touchcancel', onTouchEnd,  { passive: false });
     window.addEventListener('resize', resize);
+    window.addEventListener('xpong:langchange', function () { updateHUD(); renderStats(); renderStateTable(); });
 
     var obs = new MutationObserver(function () { readColors(); draw(); updateHUD(); });
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'lang'] });

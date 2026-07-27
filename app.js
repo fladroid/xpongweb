@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var XP_VERSION = 's20';
-  var XP_VERSION_DATE = '26 Jul 2026';
+  var XP_VERSION = 's21';
+  var XP_VERSION_DATE = '27 Jul 2026';
 
   // Nav model (shared across pages). soon=true -> disabled, coming-soon badge
   var NAV = [
@@ -53,6 +53,7 @@
       g_wins: 'wins!',
       g_legend_left: 'Left player',
       g_legend_right: 'Right player',
+      g_legend_right_walker: 'Random walker',
       g_up: 'up',
       g_down: 'down',
       g_touch_left: 'or drag on the left half (touch)',
@@ -70,6 +71,12 @@
       r2_grid_medium: 'Medium',
       r2_grid_fine: 'Fine',
       r2_train: 'Train',
+      r2_dim_ballx: 'Ball X',
+      r2_dim_bally: 'Ball Y',
+      r2_dim_dir: 'Direction',
+      r2_dim_speed: 'Speed',
+      r2_dim_leftpad: 'Left paddle',
+      r2_dim_rightpad: 'Right paddle',
       r2_stat_quality: 'returns / episode',
       r2_stat_spread: 'spread',
       r2_stat_speed: 'steps / s',
@@ -575,6 +582,7 @@
       '</div>';
     document.getElementById('xp-lang-select').addEventListener('change', function (e) {
       localStorage.setItem('xpong_lang', e.target.value); render();
+      window.dispatchEvent(new CustomEvent('xpong:langchange'));
     });
     document.getElementById('xp-theme-toggle').addEventListener('click', toggleTheme);
     document.getElementById('xp-burger').addEventListener('click', function () {

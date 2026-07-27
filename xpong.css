@@ -644,6 +644,7 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   color: var(--text-light);
 }
 .xp-game-canvas-box {
+  position: relative;
   max-width: min(100%, 72vh);
   margin: 0 auto;
   border: 2px solid var(--border);
@@ -652,6 +653,36 @@ a:hover { text-decoration: underline; color: var(--link-hover); }
   background: var(--surface);
   line-height: 0;
 }
+.xp-state-table {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 4px;
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+}
+.xp-state-head {
+  width: 100%;
+  text-align: center;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.xp-state-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+  padding: 4px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.xp-state-row span { font-size: 11px; color: var(--text-muted); }
+.xp-state-row b { font-size: 14px; color: var(--text); font-weight: 600; }
+.xp-state-out { opacity: 0.6; border-left: 2px dashed var(--border); margin-left: 6px; }
 #xp-game {
   display: block;
   touch-action: none;
