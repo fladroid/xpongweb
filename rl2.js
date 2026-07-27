@@ -261,10 +261,13 @@
   var liveEval = false;
   var liveEvalFrames = 0;
   var LIVE_EVAL_MAX_FRAMES = 900;   // ~15s at 60fps
+  var LIVE_SPEED = 1.125;           // ~12.5% faster: fractional extra physics step per frame
+  var liveStepAccum = 0;
 
   function startLiveEval() {
     liveEval = true;
     liveEvalFrames = 0;
+    liveStepAccum = 0;
     newLiveState();
     updateHUD();
   }
@@ -537,7 +540,10 @@
   // --- loop: only the live evaluation episode advances the world; bulk
   // headless training leaves the court still (it doesn't touch `state`) ---
   function frame() {
-    if (liveEval) liveStep();
+    if (liveEval) {
+      liveStepAccum += LIVE_SPEED;
+      while (liveStepAccum >= 1 && liveEval) { liveStep(); liveStepAccum -= 1; }
+    }
     draw();
     raf = requestAnimationFrame(frame);
   }
